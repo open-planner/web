@@ -1,9 +1,8 @@
 import React from 'react';
-import '../Assets/css/App.css';
+import '../Assets/css/App.scss';
 import Layout from './Layout'
 
 function App({ content }) {
-  console.log(content)
   return (
     <Layout
       content={content} />

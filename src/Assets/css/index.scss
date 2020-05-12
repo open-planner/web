@@ -1,3 +1,8 @@
+// Variaveis
+$primary-color-500: #f79071;
+$primary-color-600: #fa744f;
+$default-color: white;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -24,4 +29,15 @@ code {
   height: 100vh;
   justify-content: center;
   align-items: center;
+}
+
+/* BUTONS */
+button {
+  background-color: $primary-color-600 !important;
+  border-color: $primary-color-500 !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner{
+  background-color: $primary-color-600 !important;
+  border-color: $primary-color-500 !important;
 }

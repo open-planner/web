@@ -1,14 +1,16 @@
+@import "./index.scss";
+
 .card-center-branding {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   height: 100vh;
-  color: white;
+  color: $default-color;
   background-color: #00263b;
 }
 
 .card-center-branding h1 {
   font-size: 150px;
-  color: white;
+  color: $default-color;
 }

@@ -8,7 +8,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import '../Assets/css/Layout.css'
+import '../Assets/css/Layout.scss'
 import { Link } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -41,7 +41,9 @@ export default class extends Component {
               <Menu.Item key="3">
                 <Link to={'/register'}>Register</Link>
               </Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
+              <Menu.Item key="4">
+                <Link to={'/login'}>Login</Link>
+              </Menu.Item>
               <Menu.Item key="5">Alex</Menu.Item>
             </SubMenu>
             <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">

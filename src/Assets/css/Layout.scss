@@ -1,8 +1,11 @@
+@import "./index.scss";
+
 .site-layout-content {
-  background: #fff;
+  background: $default-color;
   padding: 24px;
   min-height: 280px;
 }
+
 #components-layout-demo-top.logo {
   width: 120px;
   height: 31px;
