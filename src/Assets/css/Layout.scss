@@ -6,6 +6,13 @@
   min-height: 280px;
 }
 
+.ant-layout-sider, .ant-layout-header, .ant-layout-sider-children, .ant-menu-dark, .ant-menu, .ant-menu-item {
+  background-color: $primary-color-500 !important;
+}
+.ant-layout-sider-trigger{
+  background-color: $primary-color-600 !important;
+}
+
 #components-layout-demo-top.logo {
   width: 120px;
   height: 31px;
