@@ -71,7 +71,7 @@ export default class ListDataLoading extends Component {
             lineHeight: '32px',
           }}
         >
-          <Button onClick={this.onLoadMore}>loading more</Button>
+          <Button type="default" onClick={this.onLoadMore}>loading more</Button>
         </div>
       ) : null;
 

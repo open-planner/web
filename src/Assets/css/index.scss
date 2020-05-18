@@ -1,6 +1,6 @@
 // Variaveis
-$primary-color-500: #f79071;
-$primary-color-600: #fa744f;
+$primary-color-500: #FF57B0;
+$primary-color-600: #FB3CA2;
 $default-color: white;
 
 body {
@@ -32,12 +32,101 @@ code {
 }
 
 /* BUTONS */
-button {
+.ant-btn-primary {
   background-color: $primary-color-600 !important;
-  border-color: $primary-color-500 !important;
+  border-color: $primary-color-500 !important;  
+}
+
+.ant-result-info .ant-result-icon > .anticon {
+  color: $primary-color-500 !important;
 }
 
 .ant-checkbox-checked .ant-checkbox-inner{
   background-color: $primary-color-600 !important;
   border-color: $primary-color-500 !important;
+}
+
+.rounded-half {
+  border-radius: 16px;
+}
+// space in elements
+
+// MarginTop
+.mt-1 {
+  margin-top: 0.1em;
+}
+.mt-2 {
+  margin-top: 0.2em;
+}
+.mt-4 {
+  margin-top: 0.4em;
+}
+.mt-6 {
+  margin-top: 0.6em;
+}
+.mt-8 {
+  margin-top: 0.8em;
+}
+.mt-10 {
+  margin-top: 2em;
+}
+
+// MarginBottom
+.mb-1 {
+  margin-bottom: 0.1em;
+}
+.mb-2 {
+  margin-bottom: 0.2em;
+}
+.mb-4 {
+  margin-bottom: 0.4em;
+}
+.mb-6 {
+  margin-bottom: 0.6em;
+}
+.mb-8 {
+  margin-bottom: 0.8em;
+}
+.mb-10 {
+  margin-bottom: 2em;
+}
+
+// MarginLeft
+.ml-1 {
+  margin-left: 0.1em;
+}
+.ml-2 {
+  margin-left: 0.2em;
+}
+.ml-4 {
+  margin-left: 0.4em;
+}
+.ml-6 {
+  margin-left: 0.6em;
+}
+.ml-8 {
+  margin-left: 0.8em;
+}
+.ml-10 {
+  margin-left: 2em;
+}
+
+// Margin right
+.mr-1 {
+  margin-right: 0.1em;
+}
+.mr-2 {
+  margin-right: 0.2em;
+}
+.mr-4 {
+  margin-right: 0.4em;
+}
+.mr-6 {
+  margin-right: 0.6em;
+}
+.mr-8 {
+  margin-right: 0.8em;
+}
+.mr-10 {
+  margin-right: 2em;
 }

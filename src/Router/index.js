@@ -12,6 +12,7 @@ export default class index extends Component {
         route.type === RouteType.PRIVATE ?
           <App
             {...this.props}
+            {...route}
             content={route.component}>
           </App>
           : <route.component {...this.props} />

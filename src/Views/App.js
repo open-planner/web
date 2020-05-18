@@ -1,11 +1,10 @@
 import React from 'react';
 import '../Assets/css/App.scss';
-import Layout from './Layout'
+import Layout from './Layout/index'
 
-function App({ content }) {
+function App(props) {
   return (
-    <Layout
-      content={content} />
+    <Layout {...props} />
   );
 }
 

@@ -13,6 +13,10 @@
   background-color: $primary-color-600 !important;
 }
 
+.ant-menu-item a, .ant-menu-item a:hover {
+  color: white;
+}
+
 #components-layout-demo-top.logo {
   width: 120px;
   height: 31px;
