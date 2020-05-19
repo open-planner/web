@@ -1,15 +1,9 @@
 import React, { Component } from 'react'
 
 import { Layout, Menu, Breadcrumb, Avatar, PageHeader, Button, Descriptions } from 'antd';
-import {
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
 import '../../Assets/css/Layout.scss'
 import { Link } from 'react-router-dom';
 import MenuItens from './Menu'
-import Title from 'antd/lib/skeleton/Title';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -42,10 +36,13 @@ export default class extends Component {
             theme="dark"
             defaultSelectedKeys={['0']}
             mode="inline">
-            <Menu.Item key="001">
+            <Menu.Item key="001" className="brand-menu">
               {/* brand */}
               {/* <div style={{ backgroundColor: "#1c1c1c", borderRadius: '150px', display: 'flex', justifyContent: 'start', alignItems: 'center', alignContent: 'center' }}> */}
-              <Avatar src="https://avatars3.githubusercontent.com/u/7293460?s=460&u=21129945ae938a79315447fe67ef8aeff2d4294e&v=4" /> User name
+              <Avatar size="large" src="https://avatars3.githubusercontent.com/u/7293460?s=460&u=21129945ae938a79315447fe67ef8aeff2d4294e&v=4" />
+              <Link to="/">
+                <span className="brand-menu-name">Joerverson santos</span>
+              </Link>
               {/* </div> */}
             </Menu.Item>
             {/* side menu */}

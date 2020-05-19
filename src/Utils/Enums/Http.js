@@ -1,5 +1,6 @@
 export default {
   OK: 200,
+  REQUEST_OK: 201,
   UNAUTHORIZED: 401,
   BAD_REQUEST: 400
 }

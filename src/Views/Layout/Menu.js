@@ -31,7 +31,7 @@ export default [
       {
         title: 'Perfil',
         icon: '',
-        link: '/profile/id-here'
+        link: '/profile'
       }
     ]
   },

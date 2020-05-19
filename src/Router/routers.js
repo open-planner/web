@@ -4,7 +4,7 @@ import Login from '../Views/Access/Login'
 import EmailConfirm from '../Views/EmailConfirm'
 import Profile from '../Views/User/Profile'
 import LifeWheel from '../Views/LifeWheel'
-
+import Tags from '../Views/Tags'
 import ROUTE_TYPE from '../Utils/Enums/RouteType'
 
 export default [
@@ -39,9 +39,15 @@ export default [
     type: ROUTE_TYPE.PRIVATE
   },
   {
-    path: '/profile/:id',
+    path: '/profile',
     title: 'Perfil',
     component: Profile,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/tags',
+    title: 'Tags',
+    component: Tags,
     type: ROUTE_TYPE.PRIVATE
   }
 ]

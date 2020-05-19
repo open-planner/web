@@ -4,13 +4,13 @@ import moment from 'moment';
 import {
   LockOutlined,
 } from '@ant-design/icons';
-const { Title, Paragraph, Text } = Typography
+import api from '../../Services/API';
 
+const { Title, Paragraph, Text } = Typography
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
-
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -24,12 +24,26 @@ const validateMessages = {
 
 export default class Profile extends Component {
   state = {
-    email: 'casinha@gg.com.br',
-    name: 'Joerverson Santos',
-    birthday: moment().format('DD/MM/YYYY'),
+    payload: {
+      email: '',
+      name: '',
+      birthday: moment().format('DD/MM/YYYY'),
+    },
     canUpdate: false, // when changed contents the button update show
     updating: false,//when to update, feedback tooo user
-    visible: false
+    visible: false,
+  }
+
+  componentDidMount = async () => {
+    const data = await api.get('/me')
+
+    this.setState({
+      payload: {
+        ...data,
+        birthday: data.dataNascimento,
+        name: data.nome
+      }
+    })
   }
 
   update = () => {
@@ -49,17 +63,25 @@ export default class Profile extends Component {
     this.setState({ [name]: str, canUpdate: true });
   };
 
+  changePassword = (values) => {
+    const data = api.patch('/me/senha', {
+      senhaAtual: values.oldPassword,
+      senhaNova: values.password
+    })
+  }
+
   //RENDERS
   renderModalChangePass = () =>
     <Modal
       title="Alterar senha"
       visible={this.state.visible}
-      onOk={this.handleOk}
+      okButtonProps={{ form: 'category-editor-form', key: 'submit', htmlType: 'submit' }}
       onCancel={() => this.setState({ visible: !this.state.visible })}>
-      <Form {...layout} name="nest-messages" onFinish={this.onFinish} validateMessages={validateMessages}>
+      <Form id="category-editor-form" onFinish={this.changePassword} {...layout} name="nest-messages" validateMessages={validateMessages}>
         <Form.Item
-          name="password"
+          name="oldPassword"
           label="Senha Antiga"
+          onChange={this.handlerInput}
           rules={[
             {
               required: true,
@@ -112,7 +134,9 @@ export default class Profile extends Component {
 
 
   render() {
-    const { updating, canUpdate, name, email, birthday } = this.state
+    const { updating, canUpdate, payload } = this.state
+    const { name, email, birthday } = payload
+
     return (
       <div>
         <this.renderModalChangePass {...this.props} />
@@ -129,7 +153,7 @@ export default class Profile extends Component {
               <Text disabled>Email:</Text>
               <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'email' }) }}>{email}</Paragraph>
               <Text disabled>Data de aniversário:</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'birthday' }) }}>{birthday}</Paragraph>
+              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'birthday' }) }}>{moment(birthday).format('DD/MM/YYYY')}</Paragraph>
             </Col>
           </Row>
           <Row justify={'end'}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, Input, Button, Checkbox, Card, notification } from 'antd';
 import "../../Assets/css/Login.scss"
 import api from '../../Services/API';
+import Auth from '../../Utils/Auth';
 
 const layout = {
   labelCol: { span: 8 },
@@ -16,16 +17,18 @@ export default class Login extends Component {
     delete values.remember
 
     const result = await api.post('/oauth/token', {
-      password: 'Admin@123',
-      username: 'admin',
+      ...values,
       grant_type: 'password'
     })
 
     if (result) {
+      Auth.setToken(result.access_token)
+      Auth.setUser({ name: result.nome })
       notification.open({
         message: 'Success',
         description: "Logado com sucesso.",
       });
+      window.location.href = '/'
     } else {
       notification.open({
         message: 'Acesso',
@@ -49,7 +52,7 @@ export default class Login extends Component {
               name="username"
               rules={[{ required: false, message: 'Por favor insira seu email.' }]}
             >
-              <Input defaultValue="admin@email.com" />
+              <Input />
             </Form.Item>
 
             <Form.Item
@@ -57,7 +60,7 @@ export default class Login extends Component {
               name="password"
               rules={[{ required: false, message: 'Por favor insira sua senha.' }]}
             >
-              <Input.Password defaultValue="Admin@123" />
+              <Input.Password />
             </Form.Item>
 
             <Form.Item {...tailLayout} name="remember" valuePropName="checked">
