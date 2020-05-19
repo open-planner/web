@@ -3,6 +3,7 @@ import { Form, Input, Button, Checkbox, Card, notification } from 'antd';
 import "../../Assets/css/Login.scss"
 import api from '../../Services/API';
 import Auth from '../../Utils/Auth';
+import logo from '../../Assets/image/cotton-bureau-brands.svg'
 
 const layout = {
   labelCol: { span: 8 },
@@ -41,6 +42,10 @@ export default class Login extends Component {
     return (
       <div className="container-centered">
         <Card>
+          <div style={{ textAlign: 'center', margin: 30 }}>
+            <img width="100" src={logo} />
+            <h1>Open Planner  </h1>
+          </div>
           <Form
             {...layout}
             name="basic"
