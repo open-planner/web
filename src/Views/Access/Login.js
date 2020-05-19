@@ -4,6 +4,7 @@ import "../../Assets/css/Login.scss"
 import api from '../../Services/API';
 import Auth from '../../Utils/Auth';
 import logo from '../../Assets/image/cotton-bureau-brands.svg'
+import { Link } from 'react-router-dom';
 
 const layout = {
   labelCol: { span: 8 },
@@ -76,6 +77,7 @@ export default class Login extends Component {
               <Button type="primary" htmlType="submit">
                 Entrar
               </Button>
+              <Link className="ml-8" to="/register">Criar nova conta</Link>
             </Form.Item>
           </Form >
         </Card>

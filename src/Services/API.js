@@ -41,7 +41,7 @@ api.interceptors.request.use(async config => {
 
 api.interceptors.response.use(
   res => {
-    if (res.status === HTTP.OK || res.status === HTTP.REQUEST_OK) {
+    if (res.status === HTTP.OK || res.status === HTTP.REQUEST_OK || res.status === 204) {
       return res.data
     }
 
@@ -53,10 +53,17 @@ api.interceptors.response.use(
     return false
   },
   error => {
-    notification.open({
-      message: "Error",
-      description: _.unescape(error.response.data.error_description),
-    });
+    if (_.isArray(error.response.data)) {
+      notification.open({
+        message: 'Error',
+        description: error.response.data.join('\n'),
+      });
+    } else {
+      notification.open({
+        message: "Error",
+        description: _.unescape(error.response.data.error_description),
+      });
+    }
 
     if (error.response.data.error === 'invalid_token') {
       Auth.signOut()

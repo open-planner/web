@@ -4,6 +4,11 @@ import { Layout, Menu, Breadcrumb, Avatar, PageHeader, Button, Descriptions } fr
 import '../../Assets/css/Layout.scss'
 import { Link } from 'react-router-dom';
 import MenuItens from './Menu'
+import {
+  LogoutOutlined,
+} from '@ant-design/icons';
+import Auth from '../../Utils/Auth';
+
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -24,6 +29,11 @@ export default class extends Component {
       current: e.key,
     });
   };
+
+  logout = () => {
+    Auth.signOut()
+    window.Location.href = '/login'
+  }
 
   render() {
     return (
@@ -62,6 +72,9 @@ export default class extends Component {
                   </Menu.Item>
               )
             }
+            <Menu.Item key={'logout'} icon={<LogoutOutlined />}>
+              <Link onClick={this.logout}>Sair</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">

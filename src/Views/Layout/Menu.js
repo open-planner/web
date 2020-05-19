@@ -19,16 +19,6 @@ export default [
     link: '',
     children: [
       {
-        title: 'Registrar',
-        icon: '',
-        link: '/register'
-      },
-      {
-        title: 'Login',
-        icon: '',
-        link: '/login'
-      },
-      {
         title: 'Perfil',
         icon: '',
         link: '/profile'
