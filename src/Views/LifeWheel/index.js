@@ -1,47 +1,58 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Table } from 'antd'
+import { Card, Row, Col, Table, Button, Typography } from 'antd'
 import Chart from 'chart.js';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import api from '../../Services/API';
+import _ from 'lodash'
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-  },
-];
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-];
+const { Paragraph } = Typography;
+const { Column } = Table;
 
 export default class index extends Component {
-  componentDidMount = () => {
+  state = {
+    lifeWheel: [],
+    dataGraph: {
+      labels: [],
+      data: []
+    }
+  }
+
+  componentDidMount = async () => {
+    const data = await api.get('/roda-vida')
+    const labels = []
+    const dataItens = []
+    const lifeWheel = []
+
+    _.forEach(data, (value, key) => {
+      labels.push(key)
+      dataItens.push(value)
+      lifeWheel.push({
+        avaliacao: key,
+        value
+      })
+    })
+
+    this.setState({
+      lifeWheel,
+      dataGraph: {
+        labels,
+        data: dataItens
+      }
+    })
     this.renderChart()
   }
 
   renderChart = () => {
-    var presets = window.chartColors;
-
     var data = {
-      labels: ['casa', 'da', 'veia', 'man', 'doido'],
+      labels: this.state.dataGraph.labels,
       datasets: [{
         borderColor: '#ff0000',
-        data: [1, 3, 10, 4, 7],
-        label: 'D0'
+        data: this.state.dataGraph.data,
+        label: 'Avaliações'
       }]
     };
 
@@ -70,16 +81,36 @@ export default class index extends Component {
     });
   }
 
+  onChangeValue = (value, record) => {
+    const { lifeWheel, dataGraph } = this.state
+
+    this.setState({
+      lifeWheel: lifeWheel.map((l, i) => {
+        if (l.avaliacao === record.avaliacao) {
+          l.value = value
+          dataGraph.data[i] = parseInt(value)
+        }
+        return l
+      }),
+      dataGraph
+    })
+
+    this.renderChart()
+  }
+
   render() {
     return (
       <div>
         <Card>
           <Row>
-            <Col span={18}>
+            <Col span={14}>
               <canvas id="life-wheel"></canvas>
             </Col>
-            <Col>
-              <Table dataSource={dataSource} columns={columns} />
+            <Col span={10}>
+              <Table dataSource={this.state.lifeWheel}>
+                <Column title="Avaliações" dataIndex="avaliacao" key="avaliacao" />
+                <Column title="Valor" dataIndex="value" key="value" render={(text, record) => <Paragraph editable={{ onChange: (e) => this.onChangeValue(e, record) }}>{text}</Paragraph>} />
+              </Table>
             </Col>
           </Row>
         </Card>

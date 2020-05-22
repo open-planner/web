@@ -36,11 +36,5 @@ export default [
     icon: TagsOutlined,
     link: '/tags',
     children: []
-  },
-  {
-    title: 'Avaliação',
-    icon: CheckOutlined,
-    link: '/avaliable',
-    children: []
   }
 ]
