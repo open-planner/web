@@ -81,20 +81,38 @@ export default class index extends Component {
     });
   }
 
-  onChangeValue = (value, record) => {
-    const { lifeWheel, dataGraph } = this.state
+  // prepare the object to send update
+  prepareObjectLifWheel = (data) => {
+    const lifeWheel = {}
 
+    data.forEach(item => {
+      lifeWheel[item.avaliacao] = item.value
+    })
+
+    return lifeWheel
+  }
+
+  onChangeValue = async (value, record) => {
+    const { lifeWheel, dataGraph } = this.state
+    // add the value in lifewheel
+    const data = lifeWheel.map((l, i) => {
+      if (l.avaliacao === record.avaliacao) {
+        l.value = parseInt(value)
+        dataGraph.data[i] = parseInt(value)
+      }
+      return l
+    })
+
+    // atualizando noo banco de dados
+    await api.put('/roda-vida', this.prepareObjectLifWheel(data))
+
+    // alterando visualmente
     this.setState({
-      lifeWheel: lifeWheel.map((l, i) => {
-        if (l.avaliacao === record.avaliacao) {
-          l.value = value
-          dataGraph.data[i] = parseInt(value)
-        }
-        return l
-      }),
+      lifeWheel: data,
       dataGraph
     })
 
+    // update chart
     this.renderChart()
   }
 
@@ -103,11 +121,11 @@ export default class index extends Component {
       <div>
         <Card>
           <Row>
-            <Col span={14}>
+            <Col span={18}>
               <canvas id="life-wheel"></canvas>
             </Col>
-            <Col span={10}>
-              <Table dataSource={this.state.lifeWheel}>
+            <Col span={6}>
+              <Table dataSource={this.state.lifeWheel} pagination={false}>
                 <Column title="Avaliações" dataIndex="avaliacao" key="avaliacao" />
                 <Column title="Valor" dataIndex="value" key="value" render={(text, record) => <Paragraph editable={{ onChange: (e) => this.onChangeValue(e, record) }}>{text}</Paragraph>} />
               </Table>
