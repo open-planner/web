@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Select, Table, Space, Tag, Button, Col, Row, Popconfirm, Modal, Input } from 'antd';
+import { Form, Select, Table, Space, Tag, Button, Col, Row, Popconfirm, Modal, Input, notification } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -47,8 +47,14 @@ export default class index extends Component {
     })
   }
 
-  delete = () => {
-    // TODO - remove tag
+  // remove tag
+  delete = async tag => {
+    await api.delete(`/tags/${tag.id}`)
+
+    notification.open({
+      message: 'Sucesso',
+      description: `Tag ${tag.descricao} removida com sucesso.`,
+    });
   }
 
   renderModalCreate = () => {
@@ -147,7 +153,7 @@ export default class index extends Component {
             render={(text, record) => (
               <Space size="middle">
                 <Button type="dashed" icon={<EditOutlined />} onClick={() => this.setState({ visible: true, record })}>Editar</Button>
-                <Popconfirm title="Deseja remover a tag?" okText="Sim" cancelText="Não" onConfirm={this.delete}>
+                <Popconfirm title="Deseja remover a tag?" okText="Sim" cancelText="Não" onConfirm={() => this.delete(record)}>
                   <Button type="dashed" danger icon={<DeleteOutlined />}>Deletar</Button>
                 </Popconfirm>
               </Space>
