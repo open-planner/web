@@ -4,6 +4,7 @@ import {
   TagsOutlined,
   UserOutlined,
   CheckOutlined,
+  DingtalkOutlined
 } from '@ant-design/icons';
 
 export default [
@@ -35,6 +36,12 @@ export default [
     title: 'Tags',
     icon: TagsOutlined,
     link: '/tags',
+    children: []
+  },
+  {
+    title: 'Viagens',
+    icon: DingtalkOutlined,
+    link: '/travels',
     children: []
   }
 ]

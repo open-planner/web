@@ -51,7 +51,7 @@ export default class extends Component {
               {/* <div style={{ backgroundColor: "#1c1c1c", borderRadius: '150px', display: 'flex', justifyContent: 'start', alignItems: 'center', alignContent: 'center' }}> */}
               <Avatar size="large" src="https://avatars3.githubusercontent.com/u/7293460?s=460&u=21129945ae938a79315447fe67ef8aeff2d4294e&v=4" />
               <Link to="/">
-                <span className="brand-menu-name">Joerverson santos</span>
+                <span className="brand-menu-name">{Auth.getUser().name}</span>
               </Link>
               {/* </div> */}
             </Menu.Item>

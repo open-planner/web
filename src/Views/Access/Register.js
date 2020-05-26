@@ -4,7 +4,6 @@ import logo from '../../Assets/image/cotton-bureau-brands.svg'
 import api from '../../Services/API';
 import _ from 'lodash'
 import Title from 'antd/lib/typography/Title';
-import { Link } from 'react-router-dom';
 
 const layout = {
   labelCol: { span: 8 },

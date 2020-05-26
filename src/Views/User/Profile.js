@@ -46,21 +46,27 @@ export default class Profile extends Component {
     })
   }
 
-  update = () => {
+  update = async () => {
+    const { payload } = this.state
     this.setState({
       updating: true
     })
 
-    setTimeout(() => {
-      this.setState({
-        updating: false,
-        canUpdate: false
-      })
-    }, 3000);
+    await api.put(`/usuarios/${payload.id}`, {
+      dataNascimento: payload.birthday,
+      email: payload.email,
+      nome: payload.name,
+      permissoes: [0]
+    })
+
+    this.setState({
+      updating: false,
+      canUpdate: false
+    })
   }
 
   handlerData = ({ str, name }) => {
-    this.setState({ [name]: str, canUpdate: true });
+    this.setState({ payload: { ...this.state.payload, [name]: str }, canUpdate: true });
   };
 
   changePassword = (values) => {

@@ -5,6 +5,8 @@ import EmailConfirm from '../Views/EmailConfirm'
 import Profile from '../Views/User/Profile'
 import LifeWheel from '../Views/LifeWheel'
 import Tags from '../Views/Tags'
+import Travel from '../Views/Travel'
+import TravelCreate from '../Views/Travel/Create'
 import ROUTE_TYPE from '../Utils/Enums/RouteType'
 
 export default [
@@ -48,6 +50,24 @@ export default [
     path: '/tags',
     title: 'Tags',
     component: Tags,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/travels',
+    title: 'Viagens',
+    component: Travel,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/travels/create',
+    title: 'Viagens',
+    component: TravelCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/travels/:id',
+    title: 'Viagens',
+    component: TravelCreate,
     type: ROUTE_TYPE.PRIVATE
   }
 ]
