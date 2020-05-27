@@ -4,7 +4,9 @@ import {
   TagsOutlined,
   UserOutlined,
   CheckOutlined,
-  DingtalkOutlined
+  DingtalkOutlined,
+  BookOutlined,
+  CalendarOutlined
 } from '@ant-design/icons';
 
 export default [
@@ -42,6 +44,18 @@ export default [
     title: 'Viagens',
     icon: DingtalkOutlined,
     link: '/travels',
+    children: []
+  },
+  {
+    title: 'Plano de Férias',
+    icon: BookOutlined,
+    link: '/vocation-planning',
+    children: []
+  },
+  {
+    title: 'Eventos',
+    icon: CalendarOutlined,
+    link: '/events',
     children: []
   }
 ]

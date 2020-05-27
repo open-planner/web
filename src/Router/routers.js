@@ -7,6 +7,12 @@ import LifeWheel from '../Views/LifeWheel'
 import Tags from '../Views/Tags'
 import Travel from '../Views/Travel'
 import TravelCreate from '../Views/Travel/Create'
+import VocationPlanning from '../Views/VocationPlanning'
+import VocationPlanningCreate from '../Views/VocationPlanning/Create'
+import VocationPlanningDetails from '../Views/VocationPlanning/Details'
+import Event from '../Views/Event'
+import EventCreate from '../Views/Event/Create'
+import EventDetails from '../Views/Event/Details'
 import ROUTE_TYPE from '../Utils/Enums/RouteType'
 
 export default [
@@ -68,6 +74,42 @@ export default [
     path: '/travels/:id',
     title: 'Viagens',
     component: TravelCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/vocation-planning',
+    title: 'Planos de Férias',
+    component: VocationPlanning,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/vocation-planning/create',
+    title: 'Planos de Férias',
+    component: VocationPlanningCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/vocation-planning/details/:id',
+    title: 'Planos de Férias',
+    component: VocationPlanningDetails,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/events',
+    title: 'Planos de Férias',
+    component: Event,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/events/create',
+    title: 'Planos de Férias',
+    component: EventCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/events/details/:id',
+    title: 'Planos de Férias',
+    component: EventDetails,
     type: ROUTE_TYPE.PRIVATE
   }
 ]
