@@ -76,7 +76,7 @@ export default class index extends Component {
         <Row justify="end" className="mb-8">
           <Col>
             <Button
-              href="/travels/create"
+              href="/#/travels/create"
               type="primary"
               size="large"
               icon={<PlusOutlined />}>
@@ -108,7 +108,7 @@ export default class index extends Component {
             align='right'
             render={(text, record) => (
               <Space size="middle">
-                <Button type="dashed" icon={<EditOutlined />} href={`/travels/${record.id}`}>Editar</Button>
+                <Button type="dashed" icon={<EditOutlined />} href={`/#/travels/${record.id}`}>Editar</Button>
                 <Popconfirm title="Deseja remover a travel?" okText="Sim" cancelText="Não" onConfirm={() => this.delete(record)}>
                   <Button type="dashed" danger icon={<DeleteOutlined />}>Deletar</Button>
                 </Popconfirm>
