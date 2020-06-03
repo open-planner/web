@@ -26,7 +26,7 @@ api.interceptors.request.use(async config => {
   if (config.data && config.url === '/oauth/token')
     config.data = jsonToQueryString(config.data)
 
-  if (Auth.getToken()) {
+  if (Auth.getToken() && !/\/public/.test(config.url)) {
     config.headers.Authorization = `Bearer ${Auth.getToken()}`
   } else {
     config.auth = {
@@ -42,7 +42,7 @@ api.interceptors.request.use(async config => {
 api.interceptors.response.use(
   res => {
     if (res.status === HTTP.OK || res.status === HTTP.REQUEST_OK || res.status === 204) {
-      return res.data
+      return res.data || true
     }
 
     notification.open({

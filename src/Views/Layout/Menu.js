@@ -57,5 +57,11 @@ export default [
     icon: CalendarOutlined,
     link: '/events',
     children: []
+  },
+  {
+    title: 'Projetos',
+    icon: CalendarOutlined,
+    link: '/project',
+    children: []
   }
 ]

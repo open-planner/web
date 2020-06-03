@@ -13,6 +13,9 @@ import VocationPlanningDetails from '../Views/VocationPlanning/Details'
 import Event from '../Views/Event'
 import EventCreate from '../Views/Event/Create'
 import EventDetails from '../Views/Event/Details'
+import Project from '../Views/Project'
+import ProjectCreate from '../Views/Project/Create'
+import ProjectDetails from '../Views/Project/Details'
 import ROUTE_TYPE from '../Utils/Enums/RouteType'
 
 export default [
@@ -35,7 +38,7 @@ export default [
     type: ROUTE_TYPE.PUBLIC
   },
   {
-    path: '/email-confirm',
+    path: '/mail-activation/:token',
     title: '',
     component: EmailConfirm,
     type: ROUTE_TYPE.PUBLIC
@@ -110,6 +113,24 @@ export default [
     path: '/events/details/:id',
     title: 'Planos de Férias',
     component: EventDetails,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/project',
+    title: 'Projetos',
+    component: Project,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/project/create',
+    title: 'Projetos',
+    component: ProjectCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/project/details/:id',
+    title: 'Projetos',
+    component: ProjectDetails,
     type: ROUTE_TYPE.PRIVATE
   }
 ]

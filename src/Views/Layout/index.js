@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Layout, Menu, Breadcrumb, Avatar, PageHeader, Button, Descriptions } from 'antd';
+import { Layout, Menu, Breadcrumb, Avatar, PageHeader, Badge, Popover } from 'antd';
 import '../../Assets/css/Layout.scss'
 import { Link } from 'react-router-dom';
 import MenuItens from './Menu'
@@ -8,6 +8,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import Auth from '../../Utils/Auth';
+import NotificationList from '../../Components/NotificationList'
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -83,6 +84,9 @@ export default class extends Component {
               ghost={false}
               onBack={this.props.path !== '/' ? () => window.history.back() : null}
               title={this.props.title}
+              extra={[
+                <NotificationList />,
+              ]}
             >
             </PageHeader>
           </div>
