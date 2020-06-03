@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import routes from './routers'
 import App from '../Views/App'
 import Page404 from '../Views/Page404'
@@ -24,14 +24,14 @@ const renderAppBase = ({ props, route }) => (
 export default class index extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           {
             routes.map((route, i) => <Route key={i} path={route.path} exact={true} render={props => renderAppBase({ props, route })} />)
           }
           <Route path='*' component={Page404} />
         </Switch>
-      </ BrowserRouter>
+      </ HashRouter>
     )
   }
 }
