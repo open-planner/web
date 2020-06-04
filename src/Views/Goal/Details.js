@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Form, Select } from 'antd'
+import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Form, Select, Skeleton } from 'antd'
 import moment from 'moment';
 import api from '../../Services/API';
 import banner from '../../Assets/image/3075759.jpg'
@@ -30,12 +30,11 @@ const initalValue = {
 
 export default class extends Component {
   state = {
-    project: initalValue,
+    goal: initalValue,
     canUpdate: false, // when changed contents the button update show
     updating: false,//when to update, feedback tooo user
     visible: false,
     status: [],
-    priority: [],
     showRecorrencia: false,
     tags: {
       all: [],
@@ -45,28 +44,27 @@ export default class extends Component {
 
   componentDidMount = async () => {
     const path = window.location.hash.split('/')
-    const project = await api.get(`/projetos/${path[3]}`)
+    const goal = await api.get(`/metas/${path[3]}`)
 
     this.setState({
-      project,
+      goal,
       tags: {
         all: (await api.get('/tags')).content,
-        selected: project.tags
+        selected: goal.tags
       },
-      showRecorrencia: project.notificacoes.length > 0,
-      status: await api.get('/projetos/status'),
-      priority: await api.get('/projetos/prioridades')
+      showRecorrencia: goal.notificacoes.length > 0,
+      status: await api.get('/metas/status'),
     })
   }
 
   update = async () => {
-    const { project, tags } = this.state
-    const id = project.id
-    delete project.id
-    delete project.tags
+    const { goal, tags } = this.state
+    const id = goal.id
+    delete goal.id
+    delete goal.tags
 
     // clean ids
-    project.notificacoes = project.notificacoes.map(m => ({
+    goal.notificacoes = goal.notificacoes.map(m => ({
       dataHora: m.dataHora,
       email: m.email
     }))
@@ -75,14 +73,14 @@ export default class extends Component {
       updating: true
     })
 
-    await api.put(`/projetos/${id}`, {
-      ...project,
+    await api.put(`/metas/${id}`, {
+      ...goal,
       tags: tags.selected.map(m => m.id)
     })
 
     notification.open({
       message: 'Sucesso',
-      description: `Evento atualizado com sucesso.`,
+      description: `Meta atualizado com sucesso.`,
     });
 
     this.setState({
@@ -92,7 +90,7 @@ export default class extends Component {
   }
 
   handlerData = ({ str, name }) => {
-    this.setState({ project: { ...this.state.project, [name]: str }, canUpdate: true });
+    this.setState({ goal: { ...this.state.goal, [name]: str }, canUpdate: true });
   }
 
   handleChangeTags = (tag, checked) => {
@@ -102,8 +100,8 @@ export default class extends Component {
   }
 
   render() {
-    const { updating, canUpdate, project, showRecorrencia, status, priority, tags } = this.state
-    const { descricao, periodo, notificacoes } = project
+    const { updating, canUpdate, goal, showRecorrencia, status, priority, tags } = this.state
+    const { descricao, data, notificacoes, anotacoes } = goal
 
     return (
       <div>
@@ -117,40 +115,44 @@ export default class extends Component {
             {/* side content user */}
             <Col span={14} offset={1}>
               <Text disabled>Descrição:</Text><br />
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'descricao' }) }}>{descricao}</Paragraph>
-              <Text disabled>Data Início:</Text><br />
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'periodo.dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
-              <Text disabled>Data Fim:</Text><br />
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'periodo.dataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
+              {
+                descricao ?
+                  <>
+                    <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'descricao' }) }}>{descricao}</Paragraph>
+                  </>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
+              <Text disabled>Anotações:</Text><br />
+              {
+                anotacoes ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'anotacoes' }) }}>{anotacoes}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
+              <Text disabled>Data:</Text><br />
+              {
+                data ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'periodo.data' }) }}>{moment(data).format('DD/MM/YYYY')}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Status:</Text><br />
-              <Form.Item name={['project', 'status']} rules={[{ required: true }]}>
-                <Select placeholder="Selecione um status"
-                  onChange={str => this.handlerData({ str, name: 'status' })}
-                  defaultValue={project.status}>
-                  {
-                    status.map(item => (
-                      <Option value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
+              {
+                status.length ?
+                  <Form.Item name={['goal', 'status']} rules={[{ required: true }]}>
+                    <Select placeholder="Selecione um status"
+                      onChange={str => this.handlerData({ str, name: 'status' })}
+                      defaultValue={goal.status}>
+                      {
+                        status.map(item => (
+                          <Option value={item.value}>
+                            {item.label}
+                          </Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
 
-              <Text disabled>Prioridade:</Text><br />
-              <Form.Item name={['project', 'prioridade']} rules={[{ required: true }]}>
-                <Select placeholder="Selecione um prioridade"
-                  onChange={str => this.handlerData({ str, name: 'prioridade' })}
-                  defaultValue={project.prioridade}>
-                  {
-                    priority.map(item => (
-                      <Option value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
               {/* tags */}
               {tags.all.map(tag => (
                 <CheckableTag

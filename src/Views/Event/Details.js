@@ -21,7 +21,7 @@ export default class extends Component {
   }
 
   componentDidMount = async () => {
-    const path = window.location.pathname.split('/')
+    const path = window.location.hash.split('/')
     const event = await api.get(`/eventos/${path[3]}`)
 
     this.setState({

@@ -16,6 +16,12 @@ import EventDetails from '../Views/Event/Details'
 import Project from '../Views/Project'
 import ProjectCreate from '../Views/Project/Create'
 import ProjectDetails from '../Views/Project/Details'
+import Goal from '../Views/Goal'
+import GoalCreate from '../Views/Goal/Create'
+import GoalDetails from '../Views/Goal/Details'
+import Task from '../Views/Task'
+import TaskCreate from '../Views/Task/Create'
+import TaskDetails from '../Views/Task/Details'
 import ROUTE_TYPE from '../Utils/Enums/RouteType'
 
 export default [
@@ -131,6 +137,42 @@ export default [
     path: '/project/details/:id',
     title: 'Projetos',
     component: ProjectDetails,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/goal',
+    title: 'Metas',
+    component: Goal,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/goal/create',
+    title: 'Metas',
+    component: GoalCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/goal/details/:id',
+    title: 'Metas',
+    component: GoalDetails,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/task',
+    title: 'Tarefas',
+    component: Task,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/task/create',
+    title: 'Tarefas',
+    component: TaskCreate,
+    type: ROUTE_TYPE.PRIVATE
+  },
+  {
+    path: '/task/details/:id',
+    title: 'Tarefas',
+    component: TaskDetails,
     type: ROUTE_TYPE.PRIVATE
   }
 ]

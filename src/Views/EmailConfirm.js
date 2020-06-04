@@ -9,7 +9,7 @@ export default class Login extends Component {
     alreadyConfirmed: false
   }
   componentDidMount = async () => {
-    const path = window.location.pathname.split('/')
+    const path = window.location.hash.split('/')
 
     const result = await api.post('/public/usuarios/ativacao', {
       token: path[2]

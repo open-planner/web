@@ -41,7 +41,7 @@ export default class Create extends Component {
   }
 
   componentDidMount = async () => {
-    const path = window.location.pathname.split('/')
+    const path = window.location.hash.split('/')
     let travel = initalValue
     let isCreate = true
 

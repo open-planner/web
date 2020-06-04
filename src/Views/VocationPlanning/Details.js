@@ -35,7 +35,7 @@ export default class extends Component {
   }
 
   componentDidMount = async () => {
-    const path = window.location.pathname.split('/')
+    const path = window.location.hash.split('/')
     const vocationPlanning = await api.get(`/planos-ferias/${path[3]}`)
 
     this.setState({

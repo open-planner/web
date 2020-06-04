@@ -17,33 +17,33 @@ export default class index extends Component {
   state = {
     visible: false,
     record: {},
-    projects: [],
+    tasks: [],
     descricao: '',
     cor: ''
   }
 
   componentDidMount = async () => {
     this.setState({
-      projects: (await api.get('/projetos')).content
+      tasks: (await api.get('/tarefas')).content
     })
   }
 
   create = async values => {
-    const data = await api.post('/projetos', {
+    const data = await api.post('/tarefas', {
       cor: values.cor,
       descricao: values.descricao
     })
 
     this.setState({
-      projects: [...this.state.projects, data],
+      tasks: [...this.state.tasks, data],
       visible: false
     })
   }
 
   // remove travel
-  delete = async project => {
+  delete = async task => {
 
-    await api.delete(`/projetos/${project.id}`)
+    await api.delete(`/tarefas/${task.id}`)
 
     notification.open({
       message: 'Sucesso',
@@ -51,7 +51,7 @@ export default class index extends Component {
     });
 
     this.setState({
-      projects: this.state.projects.filter(f => f.id !== project.id)
+      tasks: this.state.tasks.filter(f => f.id !== task.id)
     })
   }
 
@@ -61,7 +61,7 @@ export default class index extends Component {
         <Row justify="end" className="mb-8">
           <Col>
             <Button
-              href="/#/project/create"
+              href="/#/task/create"
               type="primary"
               size="large"
               icon={<PlusOutlined />}>
@@ -69,53 +69,29 @@ export default class index extends Component {
             </Button>
           </Col>
         </Row>
-        <Table dataSource={this.state.projects}>
+        <Table dataSource={this.state.tasks}>
           <Column
-            title="Descrição"
+            title="Data"
+            dataIndex="dataHora"
+            key="dataHora"
+            render={(text, record) => {
+              return <p>{moment(record.dataHora).format('DD/MM/YYYY')}</p>
+            }} />
+          <Column
+            title="Destino"
             dataIndex="descricao"
             key="descricao" />
-          <Column
-            title="Periodo Inicio"
-            dataIndex="periodo.dataInicio"
-            key="periodo.dataInicio"
-            render={(text, record) => {
-              return <p>{moment(record.periodo.dataInicio).format('DD/MM/YYYY')}</p>
-            }} />
-          <Column
-            title="Periodo Fim"
-            dataIndex="periodo.dataFim"
-            key="periodo.dataFim"
-            render={(text, record) => {
-              return <p>{moment(record.periodo.dataFim).format('DD/MM/YYYY')}</p>
-            }} />
-          <Column
-            title="Prioridade"
-            dataIndex="prioridade"
-            key="prioridade" />
           <Column
             title="Status"
             dataIndex="status"
             key="status" />
-          <Column
-            title="Tags"
-            dataIndex="tags"
-            key="tags"
-            render={(text, record) => (
-              <>
-                {
-                  record.tags.map(tag =>
-                    <Tag color={tag.cor}>{tag.descricao}</Tag>
-                  )
-                }
-              </>
-            )} />
           <Column
             title=""
             key="action"
             align='right'
             render={(text, record) => (
               <Space size="middle">
-                <Button type="dashed" icon={<EditOutlined />} href={`/#/project/details/${record.id}`}>Detalhes</Button>
+                <Button type="dashed" icon={<EditOutlined />} href={`/#/task/details/${record.id}`}>Detalhes</Button>
                 <Popconfirm title="Deseja remover a travel?" okText="Sim" cancelText="Não" onConfirm={() => this.delete(record)}>
                   <Button type="dashed" danger icon={<DeleteOutlined />}>Deletar</Button>
                 </Popconfirm>

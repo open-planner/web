@@ -63,5 +63,17 @@ export default [
     icon: CalendarOutlined,
     link: '/project',
     children: []
+  },
+  {
+    title: 'Metas',
+    icon: CalendarOutlined,
+    link: '/goal',
+    children: []
+  },
+  {
+    title: 'Tarefas',
+    icon: CalendarOutlined,
+    link: '/task',
+    children: []
   }
 ]

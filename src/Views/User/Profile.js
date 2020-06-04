@@ -158,7 +158,7 @@ export default class Profile extends Component {
             <Col offset={2}>
               <Text disabled>Email:</Text>
               <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'email' }) }}>{email}</Paragraph>
-              <Text disabled>Data de aniversário:</Text>
+              <Text disabled>Data de Nascimento:</Text>
               <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'birthday' }) }}>{moment(birthday).format('DD/MM/YYYY')}</Paragraph>
             </Col>
           </Row>

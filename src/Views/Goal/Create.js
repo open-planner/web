@@ -41,9 +41,8 @@ const initalValue = {
 export default class Create extends Component {
   state = {
     status: [],
-    priority: [],
     isLoadding: false,
-    project: initalValue,
+    goal: initalValue,
     tags: {
       selected: [],
       all: []
@@ -52,8 +51,7 @@ export default class Create extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      status: await api.get('/projetos/status'),
-      priority: await api.get('/projetos/prioridades'),
+      status: await api.get('/metas/status'),
       tags: {
         selected: [],
         all: (await api.get('/tags')).content
@@ -76,8 +74,8 @@ export default class Create extends Component {
       const { tags } = this.state
       this.loading(true)
 
-      if (values.project.notificacoes) {
-        values.project.notificacoes = [
+      if (values.goal.notificacoes) {
+        values.goal.notificacoes = [
           {
             dataHora: moment(),
             email: true
@@ -86,12 +84,12 @@ export default class Create extends Component {
       }
       const tagFiltred = tags.selected.map(m => m.id)
 
-      await api.post('/projetos', {
-        ...values.project,
+      await api.post('/metas', {
+        ...values.goal,
         tags: tagFiltred.length ? tagFiltred : null
       })
 
-      window.location.href = '/#/project'
+      window.location.href = '/#/goal'
     } catch (err) {
       console.log(err)
     }
@@ -100,27 +98,24 @@ export default class Create extends Component {
   }
 
   render() {
-    let { project, status, priority, tags } = this.state
+    let { goal, status, priority, tags } = this.state
 
     return (
       <div className="">
         {
           <Card>
-            <Form {...layout} initialValues={{ project }} name="nest-messages" onFinish={this.onCreate} validateMessages={validateMessages}>
-              <Form.Item name={['project', 'descricao']} label="Descrição" rules={[{ required: true }]}>
-                <TextArea rows={4} defaultValue={project.descricao} />
+            <Form {...layout} initialValues={{ goal }} name="nest-messages" onFinish={this.onCreate} validateMessages={validateMessages}>
+              <Form.Item name={['goal', 'descricao']} label="Descrição" rules={[{ required: true }]}>
+                <TextArea rows={4} defaultValue={goal.descricao} />
               </Form.Item>
-              <Form.Item name={['project', 'anotacoes']} label="Anotações" rules={[{ required: true }]}>
-                <TextArea rows={4} defaultValue={project.anotacoes} />
+              <Form.Item name={['goal', 'anotacoes']} label="Anotações" rules={[{ required: true }]}>
+                <TextArea rows={4} defaultValue={goal.anotacoes} />
               </Form.Item>
-              <Form.Item name={['project', 'periodo', 'dataInicio']} label="Data Inicio" rules={[{ required: true }]}>
-                <DatePicker placeholder="dd/MM/YYYY" defaultValue={project.dataInicio} />
+              <Form.Item name={['goal', 'data']} label="Data" rules={[{ required: true }]}>
+                <DatePicker placeholder="dd/MM/YYYY" defaultValue={goal.dataInicio} />
               </Form.Item>
-              <Form.Item name={['project', 'periodo', 'dataFim']} label="Data Fim" rules={[{ required: true }]}>
-                <DatePicker placeholder="dd/MM/YYYY" defaultValue={project.dataFim} />
-              </Form.Item>
-              <Form.Item name={['project', 'status']} label="Status" rules={[{ required: true }]}>
-                <Select placeholder="Selecione um status" defaultValue={project.status}>
+              <Form.Item name={['goal', 'status']} label="Status" rules={[{ required: true }]}>
+                <Select placeholder="Selecione um status" defaultValue={goal.status}>
                   {
                     status.map(item => (
                       <Option value={item.value}>
@@ -130,20 +125,9 @@ export default class Create extends Component {
                   }
                 </Select>
               </Form.Item>
-              <Form.Item name={['project', 'prioridade']} label="Prioridade" rules={[{ required: true }]}>
-                <Select placeholder="Selecione um status" defaultValue={project.priority}>
-                  {
-                    priority.map(item => (
-                      <Option value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
 
               {/* select the tags */}
-              <Form.Item name={['project', 'notificacoes']} label="Tags" rules={[{ required: false }]} valuePropName="checked">
+              <Form.Item name={['goal', 'notificacoes']} label="Tags" rules={[{ required: false }]} valuePropName="checked">
                 {tags.all.map(tag => (
                   <CheckableTag
                     key={tag.id}
@@ -156,7 +140,7 @@ export default class Create extends Component {
               </Form.Item>
 
               {/* notificações */}
-              <Form.Item name={['project', 'notificacoes']} label="Notificar" rules={[{ required: false }]} valuePropName="checked">
+              <Form.Item name={['goal', 'notificacoes']} label="Notificar" rules={[{ required: false }]} valuePropName="checked">
                 <Switch />
               </Form.Item>
 

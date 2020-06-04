@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import api from '../../Services/API';
 import moment from 'moment'
-import { Link } from 'react-router-dom';
 
 const { Column, ColumnGroup } = Table;
 const { Option } = Select;
@@ -17,33 +16,33 @@ export default class index extends Component {
   state = {
     visible: false,
     record: {},
-    projects: [],
+    goals: [],
     descricao: '',
     cor: ''
   }
 
   componentDidMount = async () => {
     this.setState({
-      projects: (await api.get('/projetos')).content
+      goals: (await api.get('/metas')).content
     })
   }
 
   create = async values => {
-    const data = await api.post('/projetos', {
+    const data = await api.post('/metas', {
       cor: values.cor,
       descricao: values.descricao
     })
 
     this.setState({
-      projects: [...this.state.projects, data],
+      goals: [...this.state.goals, data],
       visible: false
     })
   }
 
   // remove travel
-  delete = async project => {
+  delete = async goal => {
 
-    await api.delete(`/projetos/${project.id}`)
+    await api.delete(`/metas/${goal.id}`)
 
     notification.open({
       message: 'Sucesso',
@@ -51,7 +50,7 @@ export default class index extends Component {
     });
 
     this.setState({
-      projects: this.state.projects.filter(f => f.id !== project.id)
+      goals: this.state.goals.filter(f => f.id !== goal.id)
     })
   }
 
@@ -61,7 +60,7 @@ export default class index extends Component {
         <Row justify="end" className="mb-8">
           <Col>
             <Button
-              href="/#/project/create"
+              href="/#/goal/create"
               type="primary"
               size="large"
               icon={<PlusOutlined />}>
@@ -69,29 +68,18 @@ export default class index extends Component {
             </Button>
           </Col>
         </Row>
-        <Table dataSource={this.state.projects}>
+        <Table dataSource={this.state.goals}>
+          <Column
+            title="Data"
+            dataIndex="data"
+            key="data"
+            render={(text, record) => {
+              return <p>{moment(record.data).format('DD/MM/YYYY')}</p>
+            }} />
           <Column
             title="Descrição"
             dataIndex="descricao"
             key="descricao" />
-          <Column
-            title="Periodo Inicio"
-            dataIndex="periodo.dataInicio"
-            key="periodo.dataInicio"
-            render={(text, record) => {
-              return <p>{moment(record.periodo.dataInicio).format('DD/MM/YYYY')}</p>
-            }} />
-          <Column
-            title="Periodo Fim"
-            dataIndex="periodo.dataFim"
-            key="periodo.dataFim"
-            render={(text, record) => {
-              return <p>{moment(record.periodo.dataFim).format('DD/MM/YYYY')}</p>
-            }} />
-          <Column
-            title="Prioridade"
-            dataIndex="prioridade"
-            key="prioridade" />
           <Column
             title="Status"
             dataIndex="status"
@@ -115,7 +103,7 @@ export default class index extends Component {
             align='right'
             render={(text, record) => (
               <Space size="middle">
-                <Button type="dashed" icon={<EditOutlined />} href={`/#/project/details/${record.id}`}>Detalhes</Button>
+                <Button type="dashed" icon={<EditOutlined />} href={`/#/goal/details/${record.id}`}>Detalhes</Button>
                 <Popconfirm title="Deseja remover a travel?" okText="Sim" cancelText="Não" onConfirm={() => this.delete(record)}>
                   <Button type="dashed" danger icon={<DeleteOutlined />}>Deletar</Button>
                 </Popconfirm>

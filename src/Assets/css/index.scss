@@ -3,6 +3,11 @@ $primary-color-500: #FF57B0;
 $primary-color-600: #FB3CA2;
 $default-color: white;
 
+html {
+    --antd-wave-shadow-color: $primary-color-600 !important;
+    --scroll-bar: 0;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -48,6 +53,13 @@ code {
 
 .rounded-half {
   border-radius: 16px;
+}
+.ant-typography-edit {
+  color: $primary-color-500 !important;
+}
+
+.ant-switch-checked {
+  background-color: $primary-color-600 !important;
 }
 // space in elements
 
