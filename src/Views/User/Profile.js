@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Typography, Button, Form, Input, Modal } from 'antd'
+import { Card, Row, Col, Typography, Button, Form, Input, Modal, Skeleton, notification } from 'antd'
 import moment from 'moment';
 import {
   LockOutlined,
@@ -69,11 +69,24 @@ export default class Profile extends Component {
     this.setState({ payload: { ...this.state.payload, [name]: str }, canUpdate: true });
   };
 
-  changePassword = (values) => {
-    const data = api.patch('/me/senha', {
+  changePassword = async values => {
+    const data = await api.patch('/me/senha', {
       senhaAtual: values.oldPassword,
       senhaNova: values.password
     })
+
+    if (data) {
+      notification.open({
+        message: 'Sucesso',
+        description: `Senha alterada com sucesso.`,
+      });
+
+      this.setState({
+        updating: false,
+        canUpdate: false,
+        visible: false
+      })
+    }
   }
 
   //RENDERS
@@ -151,15 +164,28 @@ export default class Profile extends Component {
 
             {/* side image and name */}
             <Col span={8}>
-              <img width="200" className='rounded-half' src="https://avatars3.githubusercontent.com/u/7293460?s=460&u=21129945ae938a79315447fe67ef8aeff2d4294e&v=4" />
-              <Title level={3} className="mt-6">{name}</Title>
+              <img width="450" className='rounded-half' src="https://image.freepik.com/vetores-gratis/ilustracao-do-conceito-de-portfolio_114360-210.jpg" />
             </Col>
             {/* side content user */}
             <Col offset={2}>
+              <Text disabled>Nome:</Text>
+              {
+                name ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'noome' }) }}>{name}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Email:</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'email' }) }}>{email}</Paragraph>
+              {
+                email ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'email' }) }}>{email}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Data de Nascimento:</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'birthday' }) }}>{moment(birthday).format('DD/MM/YYYY')}</Paragraph>
+              {
+                birthday ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'birthday' }) }}>{moment(birthday).format('DD/MM/YYYY')}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
             </Col>
           </Row>
           <Row justify={'end'}>
