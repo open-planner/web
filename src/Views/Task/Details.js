@@ -25,7 +25,7 @@ export default class extends Component {
   componentDidMount = async () => {
     const path = window.location.hash.split('/')
     const task = await api.get(`/tarefas/${path[3]}`)
-
+    console.log('-------------', task)
     this.setState({
       task,
       status: await api.get('/tarefas/status'),
@@ -70,14 +70,14 @@ export default class extends Component {
   render() {
     const { updating, canUpdate, task, showRecorrencia, unitTimes } = this.state
     const { descricao, dataHora, notificacoes, recorrencia, anotacoes } = task
-
+    console.log(showRecorrencia)
     return (
       <div>
         <Card>
           <Row>
             {/* side image and name */}
             <Col span={8}>
-              <img width="450" className='rounded-half' src={banner} alt="Summer vector created by gstudioimagen - www.freepik.com" />
+              <img style={{ width: '100%' }} className='rounded-half' src={banner} alt="Summer vector created by gstudioimagen - www.freepik.com" />
               {/* <a href="https://www.freepik.com/free-photos-vectors/summer">Summer vector created by gstudioimagen - www.freepik.com</a> */}
             </Col>
             {/* side content user */}
@@ -95,22 +95,32 @@ export default class extends Component {
                   : <Skeleton.Input active={true} size={"large"} />
               }
               <Text disabled>Ativar Notificação:</Text><br />
-              <Switch onChange={() => this.setState({ showRecorrencia: !showRecorrencia })} defaultChecked={showRecorrencia} />
+              <Switch onChange={() => this.setState({ showRecorrencia: !showRecorrencia })} defaultChecked={!showRecorrencia} />
               <br />
               {
                 showRecorrencia ?
                   <>
                     <Text disabled>Recorrência:</Text><br />
-                    <Radio.Group>
-                      {
-                        unitTimes.map(m => (
-                          <Radio.Button value={m.value}>{m.label}</Radio.Button>
-                        ))
-                      }
-                    </Radio.Group><br /><br />
+                    {
+                      unitTimes.length ?
+                        <>
+                          <Radio.Group>
+                            {
+                              unitTimes.map(m => (
+                                <Radio.Button value={m.value}>{m.label}</Radio.Button>
+                              ))
+                            }
+                          </Radio.Group><br /><br />
+                        </>
+                        : <Skeleton.Input active={true} size={"large"} />
+                    }
 
                     <Text disabled>Data Limite:</Text> <br />
-                    <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'recorrencia.dataLimite' }) }}>{moment(recorrencia.dataLimite).format('DD/MM/YYYY')}</Paragraph>
+                    {
+                      recorrencia.dataLimite ?
+                        <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'recorrencia.dataLimite' }) }}>{moment(recorrencia.dataLimite).format('DD/MM/YYYY')}</Paragraph>
+                        : <Skeleton.Input active={true} size={"large"} />
+                    }
                   </>
                   : null
               }

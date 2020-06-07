@@ -109,7 +109,7 @@ export default class extends Component {
           <Row>
             {/* side image and name */}
             <Col span={8}>
-              <img width="450" className='rounded-half' src={banner} alt="Summer vector created by gstudioimagen - www.freepik.com" />
+              <img style={{ width: '100%' }} className='rounded-half' src={banner} alt="Summer vector created by gstudioimagen - www.freepik.com" />
               {/* <a href="https://www.freepik.com/free-photos-vectors/summer">Summer vector created by gstudioimagen - www.freepik.com</a> */}
             </Col>
             {/* side content user */}

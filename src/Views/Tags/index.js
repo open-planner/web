@@ -69,7 +69,7 @@ export default class index extends Component {
   renderModalCreate = () => {
     const { record, visible, tags } = this.state
     let data = [...tags, { cor: '', descricao: '', id: -1 }].find(f => f.id === record.id)
-
+    console.log(data)
     return (
       <>
         {

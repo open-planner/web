@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import Auth from '../../Utils/Auth';
 import NotificationList from '../../Components/NotificationList'
-
+import Title from 'antd/lib/skeleton/Title';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -50,9 +50,8 @@ export default class extends Component {
             <Menu.Item key="001" className="brand-menu">
               {/* brand */}
               {/* <div style={{ backgroundColor: "#1c1c1c", borderRadius: '150px', display: 'flex', justifyContent: 'start', alignItems: 'center', alignContent: 'center' }}> */}
-              <Avatar size="large" src="https://avatars3.githubusercontent.com/u/7293460?s=460&u=21129945ae938a79315447fe67ef8aeff2d4294e&v=4" />
               <Link to="/">
-                <span className="brand-menu-name">{Auth.getUser().name}</span>
+                <h3 className="brand-menu-name">{Auth.getUser().name}</h3>
               </Link>
               {/* </div> */}
             </Menu.Item>

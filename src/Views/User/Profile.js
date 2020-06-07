@@ -26,8 +26,8 @@ export default class Profile extends Component {
   state = {
     payload: {
       email: '',
-      name: '',
-      birthday: moment().format('DD/MM/YYYY'),
+      nome: '',
+      dataNascimento: undefined,
     },
     canUpdate: false, // when changed contents the button update show
     updating: false,//when to update, feedback tooo user
@@ -35,14 +35,8 @@ export default class Profile extends Component {
   }
 
   componentDidMount = async () => {
-    const data = await api.get('/me')
-
     this.setState({
-      payload: {
-        ...data,
-        birthday: data.dataNascimento,
-        name: data.nome
-      }
+      payload: await api.get('/me')
     })
   }
 
@@ -52,17 +46,28 @@ export default class Profile extends Component {
       updating: true
     })
 
-    await api.put(`/usuarios/${payload.id}`, {
-      dataNascimento: payload.birthday,
-      email: payload.email,
-      nome: payload.name,
-      permissoes: [0]
+    const data = await api.put(`/me`, {
+      nome: payload.nome,
+      dataNascimento: payload.dataNascimento,
+      email: payload.email
     })
 
-    this.setState({
-      updating: false,
-      canUpdate: false
-    })
+    if (data) {
+      notification.open({
+        message: 'Sucesso',
+        description: `Dados alterado com sucesso.`,
+      });
+
+      this.setState({
+        updating: false,
+        canUpdate: false,
+        payload: {
+          nome: payload.nome,
+          dataNascimento: payload.dataNascimento,
+          email: payload.email
+        }
+      })
+    }
   }
 
   handlerData = ({ str, name }) => {
@@ -154,7 +159,7 @@ export default class Profile extends Component {
 
   render() {
     const { updating, canUpdate, payload } = this.state
-    const { name, email, birthday } = payload
+    const { nome, email, dataNascimento } = payload
 
     return (
       <div>
@@ -164,14 +169,14 @@ export default class Profile extends Component {
 
             {/* side image and name */}
             <Col span={8}>
-              <img width="450" className='rounded-half' src="https://image.freepik.com/vetores-gratis/ilustracao-do-conceito-de-portfolio_114360-210.jpg" />
+              <img style={{ width: '100%' }} className='rounded-half' src="https://image.freepik.com/vetores-gratis/ilustracao-do-conceito-de-portfolio_114360-210.jpg" />
             </Col>
             {/* side content user */}
             <Col offset={2}>
               <Text disabled>Nome:</Text>
               {
-                name ?
-                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'noome' }) }}>{name}</Paragraph>
+                nome ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'nome' }) }}>{nome}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
               <Text disabled>Email:</Text>
@@ -182,8 +187,8 @@ export default class Profile extends Component {
               }
               <Text disabled>Data de Nascimento:</Text>
               {
-                birthday ?
-                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'birthday' }) }}>{moment(birthday).format('DD/MM/YYYY')}</Paragraph>
+                dataNascimento ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'dataNascimento' }) }}>{moment(dataNascimento).format('DD/MM/YYYY')}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
             </Col>
