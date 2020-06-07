@@ -1,8 +1,10 @@
 import axios from 'axios'
 import HTTP from '../Utils/Enums/Http'
 import Auth from '../Utils/Auth'
+import HtmlEntities from '../Utils/HtmlEntities';
 import { notification } from 'antd';
 import _ from 'lodash'
+
 const CancelToken = axios.CancelToken;
 
 const api = axios.create({
@@ -61,7 +63,7 @@ api.interceptors.response.use(
     } else {
       notification.open({
         message: "Error",
-        description: _.unescape(error.response.data.error_description),
+        description: HtmlEntities.decode(error.response.data.error_description),
       });
     }
 
