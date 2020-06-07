@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import api from '../../Services/API';
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const { Option } = Select;
 
 export default class index extends Component {
@@ -33,7 +33,8 @@ export default class index extends Component {
 
     this.setState({
       tags: [...this.state.tags, data],
-      visible: false
+      visible: false,
+      record: {}
     })
   }
 
@@ -48,7 +49,8 @@ export default class index extends Component {
 
     this.setState({
       tags: this.state.tags.map(m => m.id === record.id ? { ...dataToUpdate, id: record.id } : m),
-      visible: false
+      visible: false,
+      record: {}
     })
   }
 
@@ -69,7 +71,7 @@ export default class index extends Component {
   renderModalCreate = () => {
     const { record, visible, tags } = this.state
     let data = [...tags, { cor: '', descricao: '', id: -1 }].find(f => f.id === record.id)
-    console.log(data)
+
     return (
       <>
         {
@@ -128,6 +130,9 @@ export default class index extends Component {
                   </Option>
                   <Option value="purple">
                     <Tag color="purple">purple</Tag>
+                  </Option>
+                  <Option value="default">
+                    <Tag color="default">default</Tag>
                   </Option>
                 </Select>
               </Form.Item>

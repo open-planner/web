@@ -12,32 +12,42 @@ const layout = {
 };
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
-};
+}
+
+
 
 export default class Login extends Component {
+  state = {
+    loading: false
+  }
+
+  loading = bool => this.setState({ loading: bool })
+
   onFinish = async values => {
     delete values.remember
+    this.loading(true)
 
-    const result = await api.post('/oauth/token', {
-      ...values,
-      grant_type: 'password'
-    })
+    try {
+      const result = await api.post('/oauth/token', {
+        ...values,
+        grant_type: 'password'
+      })
 
-    if (result) {
-      Auth.setToken(result.access_token)
-      Auth.setUser({ name: result.nome })
-      notification.open({
-        message: 'Success',
-        description: "Logado com sucesso.",
-      });
-      window.location.href = '/'
-    } else {
-      notification.open({
-        message: 'Acesso',
-        description: "Login ou senha errada.",
-      });
+      if (result) {
+        Auth.setToken(result.access_token)
+        Auth.setUser({ name: result.nome })
+        notification.open({
+          message: 'Success',
+          description: "Logado com sucesso.",
+        });
+        window.location.href = '/'
+      }
+    } catch (err) {
+      console.log(err)
     }
-  };
+
+    this.loading(false)
+  }
 
   render() {
     return (
@@ -74,7 +84,7 @@ export default class Login extends Component {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button loading={this.state.loading} type="primary" htmlType="submit">
                 Entrar
               </Button>
               <Link className="ml-8" to="/register">Criar nova conta</Link>

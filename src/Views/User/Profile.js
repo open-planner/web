@@ -6,8 +6,9 @@ import {
 } from '@ant-design/icons';
 import api from '../../Services/API';
 import ConvertStringDate from '../../Utils/ConvertStringDate'
+import Validation from '../../Utils/Validation';
 
-const { Title, Paragraph, Text } = Typography
+const { Paragraph, Text } = Typography
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -128,8 +129,16 @@ export default class Profile extends Component {
           rules={[
             {
               required: true,
-              message: 'Please input your password!',
+              message: 'Por favor insira uma senha!',
             },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (!value || Validation.password(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject('Deve possuir letras(Maiúscula e Minúscula), número, char especial e ser maior que 8 char.');
+              },
+            })
           ]}
           hasFeedback
         >

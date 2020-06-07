@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Typography, Button, notification, Switch, Radio, DatePicker, Skeleton } from 'antd'
+import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Skeleton } from 'antd'
 import moment from 'moment';
 import api from '../../Services/API';
 import banner from '../../Assets/image/481712-PGZG0V-372.jpg'
@@ -25,7 +25,7 @@ export default class extends Component {
   componentDidMount = async () => {
     const path = window.location.hash.split('/')
     const task = await api.get(`/tarefas/${path[3]}`)
-    console.log('-------------', task)
+
     this.setState({
       task,
       status: await api.get('/tarefas/status'),
@@ -70,7 +70,7 @@ export default class extends Component {
   render() {
     const { updating, canUpdate, task, showRecorrencia, unitTimes } = this.state
     const { descricao, dataHora, notificacoes, recorrencia, anotacoes } = task
-    console.log(showRecorrencia)
+
     return (
       <div>
         <Card>

@@ -64,6 +64,15 @@ export default class index extends Component {
           tension: 0.0000000001
         }
       },
+      scale: {
+        angleLines: {
+          display: false
+        },
+        ticks: {
+          suggestedMin: 0,
+          suggestedMax: 1
+        }
+      },
       plugins: {
         filler: {
           propagate: false
@@ -93,12 +102,14 @@ export default class index extends Component {
   }
 
   onChangeValue = async (value, record) => {
+    value = value.substring(0, value.length - 1) / 100
+
     const { lifeWheel, dataGraph } = this.state
     // add the value in lifewheel
     const data = lifeWheel.map((l, i) => {
       if (l.avaliacao === record.avaliacao) {
-        l.value = parseInt(value)
-        dataGraph.data[i] = parseInt(value)
+        l.value = value
+        dataGraph.data[i] = value
       }
       return l
     })
@@ -127,7 +138,7 @@ export default class index extends Component {
             <Col span={6}>
               <Table dataSource={this.state.lifeWheel} pagination={false}>
                 <Column title="Avaliações" dataIndex="avaliacao" key="avaliacao" />
-                <Column title="Valor" dataIndex="value" key="value" render={(text, record) => <Paragraph editable={{ onChange: (e) => this.onChangeValue(e, record) }}>{text}</Paragraph>} />
+                <Column title="Porcentagem" dataIndex="value" key="value" render={(text, record) => <Paragraph editable={{ onChange: (e) => this.onChangeValue(e, record) }}>{(text * 100) + '%'}</Paragraph>} />
               </Table>
             </Col>
           </Row>

@@ -78,10 +78,5 @@ export default {
 
   signOut: () => {
     localStorage.clear()
-  },
-
-  // // pegando todas as informações do usuário corrente com base no firebase
-  // currentUser: async () => (await (new Database('users')).base().where('uid', '==', JSON.parse(localStorage.getItem('open-planner@user')).uid).get()).docs[0].data(),
-  // // pegando a referencia do usuario logado
-  // currentRefUser: async () => (await (new Database('users')).base().where('uid', '==', JSON.parse(localStorage.getItem('open-planner@user')).uid).get()).docs[0].ref
+  }
 }

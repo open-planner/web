@@ -4,6 +4,7 @@ import logo from '../../Assets/image/cotton-bureau-brands.svg'
 import api from '../../Services/API';
 import _ from 'lodash'
 import Title from 'antd/lib/typography/Title';
+import Validation from '../../Utils/Validation'
 
 const layout = {
   labelCol: { span: 8 },
@@ -71,6 +72,14 @@ export default class Register extends Component {
                       required: true,
                       message: 'Por favor insira uma senha!',
                     },
+                    ({ getFieldValue }) => ({
+                      validator(rule, value) {
+                        if (!value || Validation.password(value)) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject('Deve possuir letras(Maiúscula e Minúscula), número, char especial e ser maior que 8 char.');
+                      },
+                    })
                   ]}
                   hasFeedback
                 >
