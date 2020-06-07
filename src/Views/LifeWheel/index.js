@@ -102,8 +102,7 @@ export default class index extends Component {
   }
 
   onChangeValue = async (value, record) => {
-    value = value.substring(0, value.length - 1) / 100
-
+    value = value.replace('%', '') / 100
     const { lifeWheel, dataGraph } = this.state
     // add the value in lifewheel
     const data = lifeWheel.map((l, i) => {
@@ -138,7 +137,7 @@ export default class index extends Component {
             <Col span={6}>
               <Table dataSource={this.state.lifeWheel} pagination={false}>
                 <Column title="Avaliações" dataIndex="avaliacao" key="avaliacao" />
-                <Column title="Porcentagem" dataIndex="value" key="value" render={(text, record) => <Paragraph editable={{ onChange: (e) => this.onChangeValue(e, record) }}>{(text * 100) + '%'}</Paragraph>} />
+                <Column title="Porcentagem" dataIndex="value" key="value" render={(text, record) => <Paragraph editable={{ onChange: (e) => this.onChangeValue(e, record) }}>{(text * 100).toFixed(1) + '%'}</Paragraph>} />
               </Table>
             </Col>
           </Row>

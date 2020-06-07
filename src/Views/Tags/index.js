@@ -36,6 +36,10 @@ export default class index extends Component {
       visible: false,
       record: {}
     })
+    notification.open({
+      message: 'Sucesso',
+      description: `Tag criada com sucesso.`,
+    });
   }
 
   update = async values => {
@@ -52,6 +56,11 @@ export default class index extends Component {
       visible: false,
       record: {}
     })
+
+    notification.open({
+      message: 'Sucesso',
+      description: `Tag atualizada com sucesso.`,
+    });
   }
 
   // remove tag
@@ -99,40 +108,40 @@ export default class index extends Component {
               >
                 <Select placeholder="Selecione uma cor" defaultValue={data.cor}>
                   <Option value="magenta">
-                    <Tag color="magenta">magenta</Tag>
+                    <Tag color="magenta">Magenta</Tag>
                   </Option>
                   <Option value="red">
-                    <Tag color="red">red</Tag>
+                    <Tag color="red">Vermelho</Tag>
                   </Option>
                   <Option value="volcano">
-                    <Tag color="volcano">volcano</Tag>
+                    <Tag color="volcano">Volcano</Tag>
                   </Option>
                   <Option value="orange">
-                    <Tag color="orange">orange</Tag>
+                    <Tag color="orange">Laranja</Tag>
                   </Option>
                   <Option value="gold">
-                    <Tag color="gold">gold</Tag>
+                    <Tag color="gold">Ouro</Tag>
                   </Option>
                   <Option value="lime">
-                    <Tag color="lime">lime</Tag>
+                    <Tag color="lime">Limão</Tag>
                   </Option>
                   <Option value="green">
-                    <Tag color="green">green</Tag>
+                    <Tag color="green">Verde</Tag>
                   </Option>
                   <Option value="cyan">
-                    <Tag color="cyan">cyan</Tag>
+                    <Tag color="cyan">Ciano</Tag>
                   </Option>
                   <Option value="blue">
-                    <Tag color="blue">blue</Tag>
+                    <Tag color="blue">Azul</Tag>
                   </Option>
                   <Option value="geekblue">
-                    <Tag color="geekblue">geekblue</Tag>
+                    <Tag color="geekblue">Azul Escuro</Tag>
                   </Option>
                   <Option value="purple">
-                    <Tag color="purple">purple</Tag>
+                    <Tag color="purple">Roxo</Tag>
                   </Option>
                   <Option value="default">
-                    <Tag color="default">default</Tag>
+                    <Tag color="default">Cinza</Tag>
                   </Option>
                 </Select>
               </Form.Item>
