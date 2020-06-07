@@ -5,6 +5,7 @@ import {
   LockOutlined,
 } from '@ant-design/icons';
 import api from '../../Services/API';
+import ConvertStringDate from '../../Utils/ConvertStringDate'
 
 const { Title, Paragraph, Text } = Typography
 const layout = {
@@ -59,8 +60,6 @@ export default class Profile extends Component {
       });
 
       this.setState({
-        updating: false,
-        canUpdate: false,
         payload: {
           nome: payload.nome,
           dataNascimento: payload.dataNascimento,
@@ -68,6 +67,11 @@ export default class Profile extends Component {
         }
       })
     }
+
+    this.setState({
+      updating: false,
+      canUpdate: false,
+    })
   }
 
   handlerData = ({ str, name }) => {
@@ -188,7 +192,7 @@ export default class Profile extends Component {
               <Text disabled>Data de Nascimento:</Text>
               {
                 dataNascimento ?
-                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'dataNascimento' }) }}>{moment(dataNascimento).format('DD/MM/YYYY')}</Paragraph>
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str: ConvertStringDate(str), name: 'dataNascimento' }) }}>{moment(dataNascimento).format('DD/MM/YYYY')}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
             </Col>
