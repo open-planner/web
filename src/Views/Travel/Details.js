@@ -66,12 +66,16 @@ export default class extends Component {
     travel.tipo = travel.tipo.toUpperCase()
     travel.status = travel.status.toUpperCase()
 
-    await api.put(`/viagens/${id}`, travel)
+    try {
+      await api.put(`/viagens/${id}`, travel)
 
-    notification.open({
-      message: 'Sucesso',
-      description: `Evento atualizado com sucesso.`,
-    });
+      notification.open({
+        message: 'Sucesso',
+        description: `Evento atualizado com sucesso.`,
+      });
+    } catch (err) {
+      console.log(err)
+    }
 
     this.setState({
       updating: false,
@@ -81,6 +85,11 @@ export default class extends Component {
 
   handlerData = ({ str, name }) => {
     this.setState({ travel: { ...this.state.travel, [name]: str }, canUpdate: true });
+  }
+
+  handlerDataDate = ({ str, name }) => {
+    this.state.travel.periodo[name] = str
+    this.setState({ travel: this.state.travel, canUpdate: true });
   }
 
   render() {
@@ -113,13 +122,13 @@ export default class extends Component {
               <Text disabled>Data Início:</Text><br />
               {
                 periodo.dataInicio ?
-                  <Paragraph editable={{ onChange: str => this.handlerData({ str: ConvertStringDate(str), name: 'periodo.dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
+                  <Paragraph editable={{ onChange: str => this.handlerDataDate({ str: ConvertStringDate(str), name: 'dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
               <Text disabled>Data Fim:</Text><br />
               {
                 periodo.dataFim ?
-                  <Paragraph editable={{ onChange: str => this.handlerData({ str: ConvertStringDate(str), name: 'periodo.dataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
+                  <Paragraph editable={{ onChange: str => this.handlerDataDate({ str: ConvertStringDate(str), name: 'dataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
               <Text disabled>Status:</Text><br />

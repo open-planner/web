@@ -106,19 +106,19 @@ export default [
   },
   {
     path: '/events',
-    title: 'Planos de Férias',
+    title: 'Eventos',
     component: Event,
     type: ROUTE_TYPE.PRIVATE
   },
   {
     path: '/events/create',
-    title: 'Planos de Férias',
+    title: 'Evento',
     component: EventCreate,
     type: ROUTE_TYPE.PRIVATE
   },
   {
     path: '/events/details/:id',
-    title: 'Planos de Férias',
+    title: 'Evento',
     component: EventDetails,
     type: ROUTE_TYPE.PRIVATE
   },
@@ -130,13 +130,13 @@ export default [
   },
   {
     path: '/project/create',
-    title: 'Projetos',
+    title: 'Projeto',
     component: ProjectCreate,
     type: ROUTE_TYPE.PRIVATE
   },
   {
     path: '/project/details/:id',
-    title: 'Projetos',
+    title: 'Projeto',
     component: ProjectDetails,
     type: ROUTE_TYPE.PRIVATE
   },

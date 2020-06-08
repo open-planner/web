@@ -57,7 +57,7 @@ export default class Create extends Component {
       await api.post('/eventos', {
         ...values.event
       })
-      window.location.href = '/events'
+      window.location.href = '/#/events'
     } catch (err) {
       console.log(err)
     }

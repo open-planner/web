@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Skeleton } from 'antd'
+import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Skeleton, Select } from 'antd'
 import moment from 'moment';
 import api from '../../Services/API';
 import banner from '../../Assets/image/481712-PGZG0V-372.jpg'
+import CheckableTag from 'antd/lib/tag/CheckableTag';
 
 const { Paragraph, Text } = Typography
-
+const { Option } = Select;
 const initalValue = {
   dataHora: '',
-  descricao: ""
+  descricao: "",
+  status: "",
 }
 
 export default class extends Component {
@@ -19,7 +21,11 @@ export default class extends Component {
     visible: false,
     showRecorrencia: false,
     unitTimes: [],
-    status: []
+    status: [],
+    tags: {
+      all: [],
+      selected: []
+    }
   }
 
   componentDidMount = async () => {
@@ -28,6 +34,10 @@ export default class extends Component {
 
     this.setState({
       task,
+      tags: {
+        all: (await api.get('/tags')).content,
+        selected: task.tags
+      },
       status: await api.get('/tarefas/status'),
       unitTimes: await api.get('/tarefas/recorrencias/time-units'),
       showRecorrencia: task.notificacoes.length > 0
@@ -67,8 +77,15 @@ export default class extends Component {
     this.setState({ task: { ...this.state.task, [name]: str }, canUpdate: true });
   };
 
+
+  handleChangeTags = (tag, checked) => {
+    const { tags } = this.state;
+    const nextSelectedTags = checked ? [...tags.selected, tag] : tags.selected.filter(t => t !== tag);
+    this.setState({ tags: { ...tags, selected: nextSelectedTags }, canUpdate: true });
+  }
+
   render() {
-    const { updating, canUpdate, task, showRecorrencia, unitTimes } = this.state
+    const { updating, canUpdate, task, showRecorrencia, unitTimes, status, tags } = this.state
     const { descricao, dataHora, notificacoes, recorrencia, anotacoes } = task
 
     return (
@@ -88,14 +105,57 @@ export default class extends Component {
                   <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'descricao' }) }}>{descricao}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
+              <Text disabled>Anotações:</Text><br />
+              {
+                anotacoes ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'anotacoes' }) }}>{anotacoes}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Data Hora:</Text><br />
               {
                 dataHora ?
                   <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'dataHora' }) }}>{moment(dataHora).format('DD/MM/YYYY')}</Paragraph>
                   : <Skeleton.Input active={true} size={"large"} />
               }
+              <Text disabled>Status:</Text><br />
+              {
+                task.status ?
+                  <Select placeholder="Selecione um status"
+                    onChange={str => this.handlerData({ str, name: 'status' })}
+                    defaultValue={task.status}>
+                    {
+                      status.map(item => (
+                        <Option value={item.value}>
+                          {item.label}
+                        </Option>
+                      ))
+                    }
+                  </Select>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
+
+              <br />
+              <br />
+              {/* tags */}
+              <Text disabled>Tags:</Text><br />
+              {
+                tags.all.length > 0 ?
+                  tags.all.map(tag => (
+                    <CheckableTag
+                      key={tag.id}
+                      checked={tags.selected.find(f => f.id === tag.id)}
+                      onChange={checked => this.handleChangeTags(tag, checked)}
+                    >
+                      {tag.descricao}
+                    </CheckableTag>
+                  ))
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
+              <br />
+              <br />
               <Text disabled>Ativar Notificação:</Text><br />
               <Switch onChange={() => this.setState({ showRecorrencia: !showRecorrencia })} defaultChecked={!showRecorrencia} />
+              <br />
               <br />
               {
                 showRecorrencia ?
@@ -104,7 +164,7 @@ export default class extends Component {
                     {
                       unitTimes.length ?
                         <>
-                          <Radio.Group>
+                          <Radio.Group defaultValue={recorrencia.unidade}>
                             {
                               unitTimes.map(m => (
                                 <Radio.Button value={m.value}>{m.label}</Radio.Button>

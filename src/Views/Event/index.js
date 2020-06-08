@@ -47,7 +47,7 @@ export default class index extends Component {
 
     notification.open({
       message: 'Sucesso',
-      description: `Plano de férias removida com sucesso.`,
+      description: `Eventos removida com sucesso.`,
     });
 
     this.setState({
@@ -71,7 +71,7 @@ export default class index extends Component {
         </Row>
         <Table dataSource={this.state.events}>
           <Column
-            title="Destino"
+            title="Descrição"
             dataIndex="descricao"
             key="descricao" />
           <Column

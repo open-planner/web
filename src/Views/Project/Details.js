@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Form, Select } from 'antd'
+import { Card, Row, Col, Typography, Button, notification, Switch, Radio, Form, Select, Skeleton } from 'antd'
 import moment from 'moment';
 import api from '../../Services/API';
 import banner from '../../Assets/image/3075759.jpg'
 import CheckableTag from 'antd/lib/tag/CheckableTag';
+import ConvertStringDate from '../../Utils/ConvertStringDate';
 
 const { Paragraph, Text } = Typography
 const { Option } = Select;
@@ -82,7 +83,7 @@ export default class extends Component {
 
     notification.open({
       message: 'Sucesso',
-      description: `Evento atualizado com sucesso.`,
+      description: `Projeto atualizado com sucesso.`,
     });
 
     this.setState({
@@ -95,10 +96,15 @@ export default class extends Component {
     this.setState({ project: { ...this.state.project, [name]: str }, canUpdate: true });
   }
 
+  handlerDataDate = ({ str, name }) => {
+    this.state.project.periodo[name] = str
+    this.setState({ project: this.state.project, canUpdate: true });
+  }
+
   handleChangeTags = (tag, checked) => {
     const { tags } = this.state;
     const nextSelectedTags = checked ? [...tags.selected, tag] : tags.selected.filter(t => t !== tag);
-    this.setState({ tags: { ...tags, selected: nextSelectedTags } });
+    this.setState({ tags: { ...tags, selected: nextSelectedTags }, canUpdate: true });
   }
 
   render() {
@@ -117,51 +123,78 @@ export default class extends Component {
             {/* side content user */}
             <Col span={14} offset={1}>
               <Text disabled>Descrição:</Text><br />
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'descricao' }) }}>{descricao}</Paragraph>
+              {
+                descricao ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'descricao' }) }}>{descricao}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Data Início:</Text><br />
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'periodo.dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
+              {
+                periodo.dataInicio ?
+                  <Paragraph editable={{ onChange: str => this.handlerDataDate({ str: ConvertStringDate(str), name: 'dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Data Fim:</Text><br />
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'periodo.dataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
+              {
+                periodo.dataFim ?
+                  <Paragraph editable={{ onChange: str => this.handlerDataDate({ str: ConvertStringDate(str), name: 'dataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Status:</Text><br />
-              <Form.Item name={['project', 'status']} rules={[{ required: true }]}>
-                <Select placeholder="Selecione um status"
-                  onChange={str => this.handlerData({ str, name: 'status' })}
-                  defaultValue={project.status}>
-                  {
-                    status.map(item => (
-                      <Option value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
+              {
+                project.status ?
+                  <Form.Item name={['project', 'status']} rules={[{ required: true }]}>
+                    <Select placeholder="Selecione um status"
+                      onChange={str => this.handlerData({ str, name: 'status' })}
+                      defaultValue={project.status}>
+                      {
+                        status.map(item => (
+                          <Option value={item.value}>
+                            {item.label}
+                          </Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
 
               <Text disabled>Prioridade:</Text><br />
-              <Form.Item name={['project', 'prioridade']} rules={[{ required: true }]}>
-                <Select placeholder="Selecione um prioridade"
-                  onChange={str => this.handlerData({ str, name: 'prioridade' })}
-                  defaultValue={project.prioridade}>
-                  {
-                    priority.map(item => (
-                      <Option value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
-              {/* tags */}
-              {tags.all.map(tag => (
-                <CheckableTag
-                  key={tag.id}
-                  checked={tags.selected.find(f => f.id === tag.id)}
-                  onChange={checked => this.handleChangeTags(tag, checked)}
-                >
-                  {tag.descricao}
-                </CheckableTag>
-              ))}
+              {
+                project.prioridade ?
+                  <Form.Item name={['project', 'prioridade']} rules={[{ required: true }]}>
+                    <Select placeholder="Selecione um prioridade"
+                      onChange={str => this.handlerData({ str, name: 'prioridade' })}
+                      defaultValue={project.prioridade}>
+                      {
+                        priority.map(item => (
+                          <Option value={item.value}>
+                            {item.label}
+                          </Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
 
+              {/* tags */}
+              <Text disabled>Tags:</Text><br />
+              {
+                tags.all.length > 0 ?
+                  tags.all.map(tag => (
+                    <CheckableTag
+                      key={tag.id}
+                      checked={tags.selected.find(f => f.id === tag.id)}
+                      onChange={checked => this.handleChangeTags(tag, checked)}
+                    >
+                      {tag.descricao}
+                    </CheckableTag>
+                  ))
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
+
+              <br />
               <br />
               <Text disabled>Ativar Notificação:</Text><br />
               <Switch onChange={() => this.handlerData({ str: !showRecorrencia, name: 'showRecorrencia' })} defaultChecked={notificacoes.length > 0} />

@@ -5,6 +5,7 @@ import api from '../../Services/API';
 import _ from 'lodash'
 import Title from 'antd/lib/typography/Title';
 import Validation from '../../Utils/Validation'
+import locale from 'antd/es/date-picker/locale/pt_BR';
 
 const layout = {
   labelCol: { span: 8 },
@@ -62,7 +63,7 @@ export default class Register extends Component {
                   <Input />
                 </Form.Item>
                 <Form.Item name={['user', 'dataNascimento']} label="Data Nascimento" rules={[{ required: true }]}>
-                  <DatePicker placeholder="dd/MM/YYYY" />
+                  <DatePicker placeholder="Selecione a data" locale={locale} />
                 </Form.Item>
                 <Form.Item
                   name={'senha'}

@@ -173,7 +173,7 @@ export default class index extends Component {
               return <p>{moment(record.periodo.dataInicio).format('DD/MM/YYYY')}</p>
             }} />
           <Column
-            title="Periodo Inicio"
+            title="Periodo Fim"
             dataIndex="periodo.dataFim"
             key="periodo.dataFim"
             render={(text, record) => {

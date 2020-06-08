@@ -151,6 +151,10 @@ export default class index extends Component {
             dataIndex="descricao"
             key="descricao" />
           <Column
+            title="Anotações"
+            dataIndex="anotacoes"
+            key="anotacoes" />
+          <Column
             title="Periodo Inicio"
             dataIndex="periodo.dataInicio"
             key="periodo.dataInicio"

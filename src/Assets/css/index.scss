@@ -61,6 +61,19 @@ code {
 .ant-switch-checked {
   background-color: $primary-color-600 !important;
 }
+
+.ant-tag-checkable-checked {
+  background-color: $primary-color-600 !important;
+}
+
+.ant-radio-button-wrapper-checked {
+  color: $primary-color-600 !important;
+  border-color: $primary-color-600 !important;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before{
+  background-color: $primary-color-600 !important;
+}
 // space in elements
 
 // MarginTop
