@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { Form, Select, Table, Space, Tag, Button, Col, Row, Popconfirm, notification } from 'antd';
+import { Form, Select, Table, Space, Button, Col, Row, Popconfirm, notification, DatePicker, Skeleton } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import api from '../../Services/API';
 import moment from 'moment'
-import { Link } from 'react-router-dom';
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const { Option } = Select;
 
 
@@ -19,12 +19,14 @@ export default class index extends Component {
     record: {},
     tasks: [],
     descricao: '',
-    cor: ''
+    cor: '',
+    status: []
   }
 
   componentDidMount = async () => {
     this.setState({
-      tasks: (await api.get('/tarefas')).content
+      tasks: (await api.get('/tarefas')).content,
+      status: await api.get('/viagens/status'),
     })
   }
 
@@ -55,10 +57,58 @@ export default class index extends Component {
     })
   }
 
+  filter = async values => {
+    values.data = values.data ? values.data.format('YYYY-MM-DD') : undefined
+    this.setState({
+      tasks: (await api.get('/tarefas', { params: values })).content
+    })
+  }
+
   render() {
     return (
       <div>
         <Row justify="end" className="mb-8">
+          {/* filtro de dados */}
+          <Col span={24}>
+            <Form name="time_related_controls" onFinish={this.filter}>
+              <Row gutter={16}>
+                <Col>
+                  Período: <br />
+                  <Form.Item name="data">
+                    <DatePicker />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  Status: <br />
+                  {
+                    this.state.status ?
+                      <Form.Item name={'status'} rules={[{ required: false }]}>
+                        <Select placeholder="Selecione um status">
+                          {
+                            this.state.status.map(item => (
+                              <Option value={item.value}>
+                                {item.label}
+                              </Option>
+                            ))
+                          }
+                        </Select>
+                      </Form.Item>
+                      : <Skeleton.Input active={true} size={"large"} />
+                  }
+                </Col>
+                <Col>
+                  <Form.Item>
+                    <br />
+                    <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+                      filtrar
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+
+          {/* boootão de adicionar */}
           <Col>
             <Button
               href="/#/task/create"

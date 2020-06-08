@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, Typography, Button, Form, Select, Modal, notification } from 'antd'
+import { Card, Row, Col, Typography, Button, Form, Select, Modal, notification, Skeleton } from 'antd'
 import moment from 'moment';
-import {
-  LockOutlined,
-} from '@ant-design/icons';
+import ConvertStringDate from '../../Utils/ConvertStringDate'
 import api from '../../Services/API';
 
 const { Option } = Select;
-const { Title, Paragraph, Text } = Typography
+const { Paragraph, Text } = Typography
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -70,6 +68,11 @@ export default class extends Component {
     this.setState({ vocationPlanning: { ...this.state.vocationPlanning, [name]: str }, canUpdate: true });
   };
 
+  handlerDataDate = ({ str, name }) => {
+    this.state.vocationPlanning.periodo[name] = str
+    this.setState({ vocationPlanning: this.state.vocationPlanning, canUpdate: true });
+  };
+
   render() {
     const { updating, canUpdate, vocationPlanning, status } = this.state
     const { destino, periodo, anotacoes } = vocationPlanning
@@ -86,26 +89,48 @@ export default class extends Component {
             {/* side content user */}
             <Col span={14} offset={1}>
               <Text disabled>Destino:</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'destino' }) }}>{destino}</Paragraph>
+              {
+                destino ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'destino' }) }}>{destino}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Data Início:</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'periodo.dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
+              {
+                periodo.dataInicio ?
+                  <Paragraph editable={{ onChange: str => this.handlerDataDate({ str: ConvertStringDate(str), name: 'dataInicio' }) }}>{moment(periodo.dataInicio).format('DD/MM/YYYY')}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Data Fim:</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'pediodo.dataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
-              <Form.Item name={['travel', 'status']} label="Status" rules={[{ required: true }]}>
-                <Select placeholder="Selecione um status"
-                  onChange={str => this.handlerData({ str, name: 'status' })}
-                  defaultValue={vocationPlanning.status}>
-                  {
-                    status.map(item => (
-                      <Option value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
+              {
+                periodo.dataFim ?
+                  <Paragraph editable={{ onChange: str => this.handlerDataDate({ str: ConvertStringDate(str), name: 'pediododataFim' }) }}>{moment(periodo.dataFim).format('DD/MM/YYYY')}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
+
+              <Text disabled>Status:</Text>
+              {
+                vocationPlanning.status ?
+                  <Form.Item name={['travel', 'status']} rules={[{ required: true }]}>
+                    <Select placeholder="Selecione um status"
+                      onChange={str => this.handlerData({ str, name: 'status' })}
+                      defaultValue={vocationPlanning.status}>
+                      {
+                        status.map(item => (
+                          <Option value={item.value}>
+                            {item.label}
+                          </Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
               <Text disabled>Anotações</Text>
-              <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'anotacoes' }) }}>{anotacoes}</Paragraph>
+              {
+                anotacoes ?
+                  <Paragraph editable={{ onChange: str => this.handlerData({ str, name: 'anotacoes' }) }}>{anotacoes}</Paragraph>
+                  : <Skeleton.Input active={true} size={"large"} />
+              }
             </Col>
           </Row>
           <Row justify={'end'}>

@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { Form, Select, Table, Space, Tag, Button, Col, Row, Popconfirm, Modal, Input, notification } from 'antd';
+import { Form, DatePicker, Table, Space, Select, Button, Col, Row, Popconfirm, notification, Skeleton, Input } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import api from '../../Services/API';
 import moment from 'moment'
+import ConvertQueryString from '../../Utils/ConvertQueryString';
 
-const { Column, ColumnGroup } = Table;
 const { Option } = Select;
-
+const { Column } = Table;
+const { RangePicker } = DatePicker;
 
 export default class index extends Component {
   state = {
@@ -18,12 +20,16 @@ export default class index extends Component {
     record: {},
     travels: [],
     descricao: '',
-    cor: ''
+    cor: '',
+    type: [],
+    status: []
   }
 
   componentDidMount = async () => {
     this.setState({
-      travels: (await api.get('/viagens')).content
+      travels: (await api.get('/viagens')).content,
+      status: await api.get('/viagens/status'),
+      type: await api.get('/viagens/tipos')
     })
   }
 
@@ -69,11 +75,84 @@ export default class index extends Component {
     })
   }
 
+  filter = async values => {
+    values.data = values.data ? values.data.format('YYYY-MM-DD') : undefined
+    this.setState({
+      travels: (await api.get('/viagens', { params: values })).content
+    })
+  }
+
 
   render() {
     return (
       <div>
         <Row justify="end" className="mb-8">
+
+          {/* filtro de dados */}
+          <Col span={24}>
+            <Form name="time_related_controls" onFinish={this.filter}>
+              <Row gutter={16}>
+                <Col>
+                  Período: <br />
+                  <Form.Item name="data">
+                    <DatePicker />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  Tipo: <br />
+                  {
+                    this.state.type ?
+                      <Form.Item name={'tipo'} rules={[{ required: false }]}>
+                        <Select placeholder="Selecione um tipo">
+                          {
+                            this.state.type.map(item => (
+                              <Option value={item.value}>
+                                {item.label}
+                              </Option>
+                            ))
+                          }
+                        </Select>
+                      </Form.Item>
+                      : <Skeleton.Input active={true} size={"large"} />
+                  }
+                </Col>
+                <Col>
+                  Status: <br />
+                  {
+                    this.state.status ?
+                      <Form.Item name={'status'} rules={[{ required: false }]}>
+                        <Select placeholder="Selecione um status">
+                          {
+                            this.state.status.map(item => (
+                              <Option value={item.value}>
+                                {item.label}
+                              </Option>
+                            ))
+                          }
+                        </Select>
+                      </Form.Item>
+                      : <Skeleton.Input active={true} size={"large"} />
+                  }
+                </Col>
+                <Col>
+                  Destino: <br />
+                  <Form.Item name={'destino'}>
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item>
+                    <br />
+                    <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+                      filtrar
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+
+          {/* boootão de adicionar */}
           <Col>
             <Button
               href="/#/travels/create"
@@ -116,7 +195,7 @@ export default class index extends Component {
             )}
           />
         </Table>
-      </div>
+      </div >
     )
   }
 }

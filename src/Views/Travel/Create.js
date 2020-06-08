@@ -37,22 +37,10 @@ export default class Create extends Component {
     status: [],
     isLoadding: false,
     travel: initalValue,
-    isCreate: true
   }
 
   componentDidMount = async () => {
-    const path = window.location.hash.split('/')
-    let travel = initalValue
-    let isCreate = true
-
-    if (path.length > 2) {
-      travel = await api.get(`/viagens/${path[2]}`)
-      isCreate = false
-    }
-
     this.setState({
-      travel,
-      isCreate,
       types: await api.get('/viagens/tipos'),
       status: await api.get('/viagens/status')
     })
@@ -70,19 +58,7 @@ export default class Create extends Component {
     })
 
     this.loading(false)
-    window.location.href = '/travels'
-  }
-
-  // create viagens
-  onUpdate = async values => {
-    this.loading(true)
-
-    const result = await api.put('/viagens', {
-      ...values.travel
-    })
-
-    this.loading(false)
-    window.location.href = '/travels'
+    window.location.href = '/#/travels'
   }
 
   render() {
@@ -92,9 +68,12 @@ export default class Create extends Component {
       <div className="">
         {
           <Card>
-            <Form {...layout} initialValues={{ travel }} name="nest-messages" onFinish={this.state.isCreate ? this.onCreate : this.onUpdate} validateMessages={validateMessages}>
+            <Form {...layout} initialValues={{ travel }} name="nest-messages" onFinish={this.onCreate} validateMessages={validateMessages}>
               <Form.Item name={['travel', 'destino']} label="Destino" rules={[{ required: true }]}>
                 <Input />
+              </Form.Item>
+              <Form.Item name={['travel', 'anotacoes']} label="Anotações" rules={[{ required: false }]}>
+                <TextArea rows={4} defaultValue={travel.anotacoes} />
               </Form.Item>
               <Form.Item name={['travel', 'periodo', 'dataInicio']} label="Data Inicio" rules={[{ required: true }]}>
                 <DatePicker placeholder="dd/MM/YYYY" defaultValue={travel.periodo.dataInicio} />
@@ -123,9 +102,6 @@ export default class Create extends Component {
                     ))
                   }
                 </Select>
-              </Form.Item>
-              <Form.Item name={['travel', 'anotacoes']} label="Anotações" rules={[{ required: true }]}>
-                <TextArea rows={4} defaultValue={travel.anotacoes} />
               </Form.Item>
               <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                 <Row justify="end">

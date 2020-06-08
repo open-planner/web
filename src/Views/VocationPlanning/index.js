@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import { Form, Select, Table, Space, Tag, Button, Col, Row, Popconfirm, notification } from 'antd';
+import { Form, Select, Table, Space, Tag, Button, Col, Row, Popconfirm, notification, DatePicker, Skeleton, Input } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import api from '../../Services/API';
 import moment from 'moment'
 import { Link } from 'react-router-dom';
 
-const { Column, ColumnGroup } = Table;
+const { Column, } = Table;
 const { Option } = Select;
 
 
@@ -19,12 +20,14 @@ export default class index extends Component {
     record: {},
     vocationPlanning: [],
     descricao: '',
-    cor: ''
+    cor: '',
+    status: []
   }
 
   componentDidMount = async () => {
     this.setState({
-      vocationPlanning: (await api.get('/planos-ferias')).content
+      vocationPlanning: (await api.get('/planos-ferias')).content,
+      status: await api.get('/planos-ferias/status')
     })
   }
 
@@ -70,10 +73,64 @@ export default class index extends Component {
     })
   }
 
+  filter = async values => {
+    values.data = values.data ? values.data.format('YYYY-MM-DD') : undefined
+    this.setState({
+      vocationPlanning: (await api.get('/planos-ferias', { params: values })).content
+    })
+  }
+
   render() {
     return (
       <div>
         <Row justify="end" className="mb-8">
+          {/* filtro de dados */}
+          <Col span={24}>
+            <Form name="time_related_controls" onFinish={this.filter}>
+              <Row gutter={16}>
+                <Col>
+                  Período: <br />
+                  <Form.Item name="data">
+                    <DatePicker />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  Status: <br />
+                  {
+                    this.state.status ?
+                      <Form.Item name={'status'} rules={[{ required: false }]}>
+                        <Select placeholder="Selecione um status">
+                          {
+                            this.state.status.map(item => (
+                              <Option value={item.value}>
+                                {item.label}
+                              </Option>
+                            ))
+                          }
+                        </Select>
+                      </Form.Item>
+                      : <Skeleton.Input active={true} size={"large"} />
+                  }
+                </Col>
+                <Col>
+                  Destino: <br />
+                  <Form.Item name={'destino'}>
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item>
+                    <br />
+                    <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+                      filtrar
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+
+          {/* boootão de adicionar */}
           <Col>
             <Button
               href="/#/vocation-planning/create"
@@ -88,9 +145,7 @@ export default class index extends Component {
           <Column
             title="Destino"
             dataIndex="destino"
-            key="destino" render={(text, record) => {
-              return <Link to={`/vocation-planning/details/${record.id}`}>{text}</Link>
-            }} />
+            key="destino" />
           <Column
             title="Periodo Inicio"
             dataIndex="periodo.dataInicio"

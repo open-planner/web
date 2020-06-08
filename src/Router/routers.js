@@ -7,6 +7,7 @@ import LifeWheel from '../Views/LifeWheel'
 import Tags from '../Views/Tags'
 import Travel from '../Views/Travel'
 import TravelCreate from '../Views/Travel/Create'
+import TravelDetails from '../Views/Travel/Details'
 import VocationPlanning from '../Views/VocationPlanning'
 import VocationPlanningCreate from '../Views/VocationPlanning/Create'
 import VocationPlanningDetails from '../Views/VocationPlanning/Details'
@@ -82,7 +83,7 @@ export default [
   {
     path: '/travels/:id',
     title: 'Viagens',
-    component: TravelCreate,
+    component: TravelDetails,
     type: ROUTE_TYPE.PRIVATE
   },
   {
