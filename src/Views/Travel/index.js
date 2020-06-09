@@ -8,7 +8,6 @@ import {
 } from '@ant-design/icons';
 import api from '../../Services/API';
 import moment from 'moment'
-import ConvertQueryString from '../../Utils/ConvertQueryString';
 
 const { Option } = Select;
 const { Column } = Table;
@@ -27,7 +26,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      travels: (await api.get('/viagens')).content,
+      travels: (await api.get('/viagens', { params: { sort: 'periodo.dataInicio,asc' } })).content,
       status: await api.get('/viagens/status'),
       type: await api.get('/viagens/tipos')
     })
@@ -67,7 +66,7 @@ export default class index extends Component {
 
     notification.open({
       message: 'Sucesso',
-      description: `Tag ${travel.descricao} removida com sucesso.`,
+      description: `Viagem removida com sucesso.`,
     });
 
     this.setState({
@@ -93,7 +92,7 @@ export default class index extends Component {
             <Form name="time_related_controls" onFinish={this.filter}>
               <Row gutter={16}>
                 <Col>
-                  Período: <br />
+                  Data: <br />
                   <Form.Item name="data">
                     <DatePicker />
                   </Form.Item>

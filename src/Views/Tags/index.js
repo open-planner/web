@@ -21,7 +21,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      tags: (await api.get('/tags')).content
+      tags: (await api.get('/tags', { params: { sort: 'descricao,asc' } })).content
     })
   }
 

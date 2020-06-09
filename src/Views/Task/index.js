@@ -25,7 +25,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      tasks: (await api.get('/tarefas')).content,
+      tasks: (await api.get('/tarefas', { params: { sort: 'dataHora,asc' } })).content,
       status: await api.get('/viagens/status'),
     })
   }
@@ -73,7 +73,7 @@ export default class index extends Component {
             <Form name="time_related_controls" onFinish={this.filter}>
               <Row gutter={16}>
                 <Col>
-                  Período: <br />
+                  Data: <br />
                   <Form.Item name="data">
                     <DatePicker />
                   </Form.Item>
@@ -128,7 +128,7 @@ export default class index extends Component {
               return <p>{moment(record.dataHora).format('DD/MM/YYYY')}</p>
             }} />
           <Column
-            title="Destino"
+            title="Descrição"
             dataIndex="descricao"
             key="descricao" />
           <Column

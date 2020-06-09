@@ -26,7 +26,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      vocationPlanning: (await api.get('/planos-ferias')).content,
+      vocationPlanning: (await api.get('/planos-ferias', { params: { sort: 'periodo.dataInicio,asc' } })).content,
       status: await api.get('/planos-ferias/status')
     })
   }

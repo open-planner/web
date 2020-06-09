@@ -24,7 +24,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      events: (await api.get('/eventos')).content
+      events: (await api.get('/eventos', { params: { sort: 'dataHora,asc' } })).content
     })
   }
 

@@ -26,7 +26,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      projects: (await api.get('/projetos')).content,
+      projects: (await api.get('/projetos', { params: { sort: 'periodo.dataInicio,asc' } })).content,
       status: await api.get('/projetos/status'),
       type: await api.get('/projetos/prioridades')
     })
@@ -60,6 +60,7 @@ export default class index extends Component {
   }
 
   filter = async values => {
+    window.document.getElementById('form-filter-project').reset()
     values.data = values.data ? values.data.format('YYYY-MM-DD') : undefined
     this.setState({
       projects: (await api.get('/projetos', { params: values })).content
@@ -72,10 +73,10 @@ export default class index extends Component {
         <Row justify="end" className="mb-8">
           {/* filtro de dados */}
           <Col span={24}>
-            <Form name="time_related_controls" onFinish={this.filter}>
+            <Form id='form-filter-project' name="time_related_controls" onFinish={this.filter}>
               <Row gutter={16}>
                 <Col>
-                  Período: <br />
+                  Data: <br />
                   <Form.Item name="data">
                     <DatePicker />
                   </Form.Item>
@@ -84,7 +85,7 @@ export default class index extends Component {
                   Prioridades: <br />
                   {
                     this.state.type ?
-                      <Form.Item name={'tipo'} rules={[{ required: false }]}>
+                      <Form.Item name={'prioridade'} rules={[{ required: false }]}>
                         <Select placeholder="Selecione um tipo">
                           {
                             this.state.type.map(item => (
@@ -117,8 +118,8 @@ export default class index extends Component {
                   }
                 </Col>
                 <Col>
-                  Destino: <br />
-                  <Form.Item name={'destino'}>
+                  Descrição: <br />
+                  <Form.Item name={'descricao'}>
                     <Input />
                   </Form.Item>
                 </Col>

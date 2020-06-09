@@ -56,7 +56,7 @@ export default class Register extends Component {
                 <h1>Open Planner  </h1>
               </div>
               <Form {...layout} name="nest-messages" onFinish={this.onFinish} validateMessages={validateMessages}>
-                <Form.Item name={['user', 'nome']} label="Nome" rules={[{ required: true }]}>
+                <Form.Item name={['user', 'nome']} label="Primeiro Nome" rules={[{ required: true }]}>
                   <Input />
                 </Form.Item>
                 <Form.Item name={['user', 'email']} label="Email" rules={[{ type: 'email', required: true }]}>

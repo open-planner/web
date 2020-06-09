@@ -9,7 +9,7 @@ import {
 import api from '../../Services/API';
 import moment from 'moment'
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const { Option } = Select;
 
 
@@ -25,7 +25,7 @@ export default class index extends Component {
 
   componentDidMount = async () => {
     this.setState({
-      goals: (await api.get('/metas')).content,
+      goals: (await api.get('/metas', { params: { sort: 'data,asc' } })).content,
       status: await api.get('/metas/status'),
     })
   }
@@ -73,7 +73,7 @@ export default class index extends Component {
             <Form name="time_related_controls" onFinish={this.filter}>
               <Row gutter={16}>
                 <Col>
-                  Período: <br />
+                  Data: <br />
                   <Form.Item name="data">
                     <DatePicker />
                   </Form.Item>
