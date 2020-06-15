@@ -23,6 +23,9 @@ import GoalDetails from '../Views/Goal/Details'
 import Task from '../Views/Task'
 import TaskCreate from '../Views/Task/Create'
 import TaskDetails from '../Views/Task/Details'
+import AlterEmailConfirm from '../Views/AlterEmailConfirm'
+import RecoveryPassword from '../Views/RecoveryPassword'
+import RecoveryPasswordConfirm from '../Views/RecoveryPasswordConfirm'
 import ROUTE_TYPE from '../Utils/Enums/RouteType'
 
 export default [
@@ -48,6 +51,24 @@ export default [
     path: '/mail-activation/:token',
     title: '',
     component: EmailConfirm,
+    type: ROUTE_TYPE.PUBLIC
+  },
+  {
+    path: '/update-mail/:token',
+    title: '',
+    component: AlterEmailConfirm,
+    type: ROUTE_TYPE.PUBLIC
+  },
+  {
+    path: '/recovery-password',
+    title: '',
+    component: RecoveryPassword,
+    type: ROUTE_TYPE.PUBLIC
+  },
+  {
+    path: '/recovery-password/:token',
+    title: '',
+    component: RecoveryPasswordConfirm,
     type: ROUTE_TYPE.PUBLIC
   },
   {
