@@ -31,7 +31,7 @@ export default class index extends Component {
       labels.push(key)
       dataItens.push(value)
       lifeWheel.push({
-        avaliacao: key,
+        avaliacao: key.toUpperCase(),
         value
       })
     })
